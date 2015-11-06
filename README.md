@@ -17,3 +17,9 @@ An agent-based model of biological chemotaxis driven movement.
 ## Demo
 
 A current progress demo is available at: http://ec2-52-30-208-160.eu-west-1.compute.amazonaws.com:8080/chemotaxis/  
+
+## Git remotes
+
+git@github.com:koHd/AgentBasedModel_Chemotaxis.git
+
+
