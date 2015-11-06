@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour {
 	{
         if (!rb.IsSleeping())
         {
-            MoveRandom moveRandom = new MoveRandom();
-            moveRandom.Execute(this);
+            //MoveRandom moveRandom = new MoveRandom();
+            //moveRandom.Execute(this);
         }
     }
 
@@ -32,8 +32,8 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject.CompareTag ("PickUp")) 
 		{
 			other.gameObject.SetActive (false);
-            Sleep sleep = new Sleep();
-            sleep.Execute(this);
+            //Sleep sleep = new Sleep();
+            //sleep.Execute(this);
 		}
 	}
 

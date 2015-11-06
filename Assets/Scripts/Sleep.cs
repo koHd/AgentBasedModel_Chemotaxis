@@ -5,7 +5,7 @@ public class Sleep : State {
 
     public Sleep() { }
 
-    new public void Execute(PlayerController agent)
+    public void Execute(DumbAgent agent)
     {
         agent.sleep();
     }

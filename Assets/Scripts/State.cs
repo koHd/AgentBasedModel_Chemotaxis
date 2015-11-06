@@ -2,8 +2,8 @@
 
 public class State {
 
-    public void Enter(PlayerController agent) { }
-    public void Execute(PlayerController agent) { }
-    public void Exit(PlayerController agent) { }
+    public void Enter(Agent agent) { }
+    public void Execute(Agent agent) { }
+    public void Exit(Agent agent) { }
 
 }
