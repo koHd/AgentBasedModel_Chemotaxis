@@ -3,12 +3,12 @@ using System.Collections;
 
 public class Agent : MonoBehaviour {
 
-    private float speed, maxSpeed, maxDistance;
-    private Vector3 direction;
-    private Rigidbody rb;
-    private State previousState;
-    private State currentState;
-    private State globalState;
+    protected float speed, maxSpeed, maxDistance;
+    protected Vector3 direction;
+    protected Rigidbody rb;
+    protected State previousState;
+    protected State currentState;
+    protected State globalState;
 
     void Start () {}
 	void Update () {}

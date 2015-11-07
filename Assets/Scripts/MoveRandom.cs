@@ -7,6 +7,8 @@ public class MoveRandom : State {
 
     public void Execute(DumbAgent agent)
     {
+        if (agent.getRigidbody().IsSleeping())
+            return;
         float maxDistance = agent.getMaxDistance();
         agent.setSpeed(Random.Range(0.0f, agent.getMaxSpeed()));
         agent.setDirection(new Vector3(

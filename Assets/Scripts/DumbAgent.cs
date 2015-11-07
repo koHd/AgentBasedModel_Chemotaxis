@@ -3,13 +3,6 @@ using System.Collections;
 
 public class DumbAgent : Agent {
 
-    private float speed, maxSpeed, maxDistance;
-    private Vector3 direction;
-    private Rigidbody rb;
-    private State previousState;
-    private State currentState;
-    private State globalState;
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -19,11 +12,8 @@ public class DumbAgent : Agent {
 
     void FixedUpdate()
     {
-        if (!rb.IsSleeping())
-        {
-            MoveRandom moveRandom = new MoveRandom();
-            moveRandom.Execute(this);
-        }
+        MoveRandom moveRandom = new MoveRandom();
+        moveRandom.Execute(this);
     }
 
     void OnTriggerEnter(Collider other)
