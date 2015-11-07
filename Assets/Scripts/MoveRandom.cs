@@ -15,6 +15,6 @@ public class MoveRandom : State {
             Random.Range(-maxDistance, maxDistance),
             Random.Range(-maxDistance, maxDistance),
             Random.Range(-maxDistance, maxDistance)));
-        agent.move();
+        agent.moveRandom();
     }
 }

@@ -3,21 +3,22 @@ using System.Collections;
 
 public class DumbAgent : Agent {
 
-    void Start()
+    public override void Start()
     {
         rb = GetComponent<Rigidbody>();
         maxSpeed = 5.0f;
         maxDistance = 5.0f;
     }
 
-    void FixedUpdate()
+    public override void FixedUpdate()
     {
         MoveRandom moveRandom = new MoveRandom();
         moveRandom.Execute(this);
     }
 
-    void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
+        // this should be implemented as a state Collision 
         if (other.gameObject.CompareTag("PickUp"))
         {
             other.gameObject.SetActive(false);
@@ -26,38 +27,4 @@ public class DumbAgent : Agent {
         }
     }
 
-    public void setSpeed(float speed)
-    {
-        this.speed = speed;
-    }
-
-    public void setDirection(Vector3 movement)
-    {
-        this.direction = movement;
-    }
-
-    public float getMaxSpeed()
-    {
-        return maxSpeed;
-    }
-
-    public float getMaxDistance()
-    {
-        return maxDistance;
-    }
-
-    public Rigidbody getRigidbody()
-    {
-        return rb;
-    }
-
-    public void move()
-    {
-        rb.AddForce(this.direction * this.speed);
-    }
-
-    public void sleep()
-    {
-        rb.Sleep();
-    }
 }
