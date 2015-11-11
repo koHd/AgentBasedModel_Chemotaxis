@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Sleep : State {
-
-    public Sleep() { }
-
-    public void Execute(DumbAgent agent)
+namespace Assets.Scripts
+{
+    public class Sleep : State
     {
-        agent.sleep();
+
+        public Sleep() { }
+
+        public void Execute(DumbAgent agent)
+        {
+            agent.sleep();
+        }
+
     }
-	
 }

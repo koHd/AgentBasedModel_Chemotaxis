@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class StateMachine : MonoBehaviour {
+namespace Assets.Scripts
+{
+    public class StateMachine : MonoBehaviour
+    {
 
-    private Agent agent;
-    private State previousState;
-    private State currentState;
-    private State globalState;
-    
+        private Agent agent;
+        private State previousState;
+        private State currentState;
+        private State globalState;
+
+    }
 }
