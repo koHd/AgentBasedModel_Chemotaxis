@@ -26,7 +26,7 @@ namespace Assets.Scripts
             locoAgent.moveRandom();
             locoAgent.useEnergy(1);
 
-            if (locoAgent.getEngery() <= 0)
+            if (locoAgent.getEnergy() <= 0)
             {
                 Debug.Log("Oh no, I've died of hunger! ");
                 locoAgent.changeState(new Sleep());

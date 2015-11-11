@@ -26,7 +26,7 @@ namespace Assets.Scripts
             Debug.Log("Moving around sure is tiring! Agent Energy: " + energy);
         }
 
-        public int getEngery()
+        public int getEnergy()
         {
             return energy;
         }
