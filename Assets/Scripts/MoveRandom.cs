@@ -8,21 +8,34 @@ namespace Assets.Scripts
 
         public MoveRandom() { }
 
-        public void Execute(DumbAgent agent)
+        public override void Enter(Agent agent)
         {
-            if (agent.getEngery() <= 0)
-            {
-                Debug.Log("Oh no, I've died of hunger! ");
-                return;
-            }
-            float maxDistance = agent.getMaxDistance();
-            agent.setSpeed(Random.Range(0.0f, agent.getMaxSpeed()));
-            agent.setDirection(new Vector3(
+            Debug.Log("Entering MoveRandom State. ");
+        }
+
+        override public void Execute(Agent agent)
+        {
+            LocomotiveAgent locoAgent = (LocomotiveAgent) agent;
+
+            float maxDistance = locoAgent.getMaxDistance();
+            locoAgent.setSpeed(Random.Range(0.0f, locoAgent.getMaxSpeed()));
+            locoAgent.setDirection(new Vector3(
                 Random.Range(-maxDistance, maxDistance),
                 Random.Range(-maxDistance, maxDistance),
                 Random.Range(-maxDistance, maxDistance)));
-            agent.moveRandom();
-            agent.useEnergy(1);
+            locoAgent.moveRandom();
+            locoAgent.useEnergy(1);
+
+            if (locoAgent.getEngery() <= 0)
+            {
+                Debug.Log("Oh no, I've died of hunger! ");
+                locoAgent.changeState(new Sleep());
+            }
+        }
+
+        public override void Exit(Agent agent)
+        {
+            Debug.Log("Exiting MoveRandom State.");
         }
     }
 }

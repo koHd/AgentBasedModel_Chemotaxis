@@ -5,9 +5,9 @@ namespace Assets.Scripts
     public class State
     {
 
-        public void Enter(Agent agent) { }
-        public void Execute(Agent agent) { }
-        public void Exit(Agent agent) { }
+        public virtual void Enter(Agent agent) { }
+        public virtual void Execute(Agent agent) { }
+        public virtual void Exit(Agent agent) { }
 
     }
 }

@@ -11,12 +11,13 @@ namespace Assets.Scripts
             maxSpeed = 5.0f;
             maxDistance = 5.0f;
             energy = 1000;
+            currentState = new MoveRandom();
         }
 
         public override void FixedUpdate()
         {
-            MoveRandom moveRandom = new MoveRandom();
-            moveRandom.Execute(this);
+            if (currentState != null)
+                currentState.Execute(this);
         }
 
         // percept - sense other thing from environment

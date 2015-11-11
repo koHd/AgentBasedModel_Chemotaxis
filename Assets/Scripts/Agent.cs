@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Assets.Scripts
 {
@@ -7,9 +6,7 @@ namespace Assets.Scripts
     {
 
         protected Rigidbody rb;
-        protected State previousState;
         protected State currentState;
-        protected State globalState;
 
         public virtual void Start() { }
         public virtual void Update() { }
@@ -20,9 +17,13 @@ namespace Assets.Scripts
             rb.Sleep();
         }
 
-        public void setCurrentState(State newState)
+        public void changeState(State newState)
         {
-            this.currentState = newState;
+            currentState.Exit(this);
+
+            currentState = newState;
+
+            currentState.Enter(this);
         }
 
         public State getCurrentState()
