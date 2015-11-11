@@ -6,11 +6,29 @@ namespace Assets.Scripts
     {
 
         protected float speed, maxSpeed, maxDistance;
+        protected int energy;
         protected Vector3 direction;
 
         public virtual void moveRandom()
         {
             rb.AddForce(direction * speed);
+        }
+
+        public void consumeEnergy(int amount)
+        {
+            energy += amount;
+            Debug.Log("Yum, food! Agent Energy: " + energy);
+        }
+
+        public void useEnergy(int amount)
+        {
+            energy -= amount;
+            Debug.Log("Moving around sure is tiring! Agent Energy: " + energy);
+        }
+
+        public int getEngery()
+        {
+            return energy;
         }
 
         public void setSpeed(float speed)

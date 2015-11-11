@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Assets.Scripts
 {
@@ -11,6 +10,7 @@ namespace Assets.Scripts
             rb = GetComponent<Rigidbody>();
             maxSpeed = 5.0f;
             maxDistance = 5.0f;
+            energy = 1000;
         }
 
         public override void FixedUpdate()
@@ -26,8 +26,7 @@ namespace Assets.Scripts
             if (other.gameObject.CompareTag("PickUp"))
             {
                 other.gameObject.SetActive(false);
-                Sleep sleep = new Sleep();
-                sleep.Execute(this);
+                consumeEnergy(100);
             }
         }
 
