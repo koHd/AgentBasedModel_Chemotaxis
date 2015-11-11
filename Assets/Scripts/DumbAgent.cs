@@ -3,6 +3,9 @@ using System.Collections;
 
 public class DumbAgent : Agent {
 
+    protected float speed, maxSpeed, maxDistance;
+    protected Vector3 direction;
+
     public override void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -16,9 +19,9 @@ public class DumbAgent : Agent {
         moveRandom.Execute(this);
     }
 
+    // this is an agent percept - sense other thing from environment
     public virtual void OnTriggerEnter(Collider other)
     {
-        // this should be implemented as a state Collision 
         if (other.gameObject.CompareTag("PickUp"))
         {
             other.gameObject.SetActive(false);

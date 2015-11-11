@@ -1,6 +1,6 @@
 # Chemotaxis Simulation
 
-An agent-based model of biological chemotaxis driven movement. 
+An agent-based model of biological chemotaxis driven movement implemented with Unity3D. 
 
 ## Roadmap
 
