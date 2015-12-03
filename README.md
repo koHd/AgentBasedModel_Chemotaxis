@@ -16,7 +16,7 @@ An agent-based model of biological chemotaxis driven movement implemented with U
 
 ## Demo
 
-A current progress demo is available at: http://ec2-52-30-208-160.eu-west-1.compute.amazonaws.com:8080/chemotaxis/  
+I need to re-install tomcat to my AWS host for the WebGL demo of this project to run. 
 
 ## Git remotes
 
