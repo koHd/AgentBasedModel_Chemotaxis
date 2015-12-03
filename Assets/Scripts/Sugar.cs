@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Assets.Scripts
 {
-    public class Sugar : MonoBehaviour
+    public class Sugar
     {
 
         private GameObject _sugar;
-        private float size;
+        private float size, neighbourSize;
         private Vector3[] neighbourSpawnPoints = new Vector3[4];
 
         public Sugar(GameObject prefab, float size, Vector3 position)
@@ -16,12 +16,12 @@ namespace Assets.Scripts
             _sugar = prefab;
             _sugar.transform.position = position;
             _sugar.transform.localScale = new Vector3(size, size, size);
-            float neighbourSize = this.size / 2;
-            if (neighbourSize > 0.10)
+            neighbourSize = this.size / 2;
+            if (neighbourSize > 0.2)
             {
                 this.buildNeighbourhood();
-                this.spawnNeighbours();
             }
+            Debug.Log("Created new sugar of size: " + size);
         }
 
         public void buildNeighbourhood()
@@ -40,13 +40,30 @@ namespace Assets.Scripts
         {
             foreach (Vector3 spawnPoint in neighbourSpawnPoints)
             {
-                Sugar neighbour = new Sugar(_sugar, _sugar.transform.localScale.x, spawnPoint);
+                Sugar neighbour = new Sugar(_sugar, neighbourSize, spawnPoint);
+                Debug.Log("Spawned new sugar of size: " + neighbourSize);
+                Debug.Log("Spawned new sugar at: " + spawnPoint.x);
             }
         }
 
         public GameObject getSugar()
         {
             return _sugar;
+        }
+
+        public float getSize()
+        {
+            return size;
+        }
+
+        public Vector3[] getNeighbourSpawnPoints()
+        {
+            return neighbourSpawnPoints;
+        }
+
+        public float getNeighbourSize()
+        {
+            return neighbourSize;
         }
     }
 }
