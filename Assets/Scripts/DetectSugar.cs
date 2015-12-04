@@ -4,7 +4,7 @@ using System.Collections;
 public class DetectSugar : MonoBehaviour
 {
     bool inSugar = false;
-    Vector3 sugarOrigin;
+    SugarGradient sugarGradient;
 
 	// Use this for initialization
 	void Start ()
@@ -16,7 +16,7 @@ public class DetectSugar : MonoBehaviour
 	void Update ()
     {
         if (inSugar)
-            Debug.Log("Sugar concentration: " + 100/Vector3.Distance(sugarOrigin, transform.position));
+            Debug.Log("Sugar concentration: " + sugarGradient.getSugarConcentration(transform.position));
 	}
 
     void OnTriggerEnter(Collider other)
@@ -24,13 +24,16 @@ public class DetectSugar : MonoBehaviour
         if (other.GetComponent<SugarGradient>())
         {
             inSugar = true;
-            sugarOrigin = other.transform.position;
+            sugarGradient = other.GetComponent<SugarGradient>();
         }
     }
 
     void OnTriggerExit(Collider other)
     {
         if (inSugar)
+        {
             inSugar = false;
+            sugarGradient = null;
+        }
     }
 }
