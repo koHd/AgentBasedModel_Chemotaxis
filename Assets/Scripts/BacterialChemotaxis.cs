@@ -3,11 +3,12 @@ using System.Collections;
 
 public class BacterialChemotaxis : MonoBehaviour
 {
+    private float speed;
 
 	// Use this for initialization
 	void Start ()
     {
-
+        speed = GetComponent<Ecoli>().getSpeed();
 	}
 
 	// Update is called once per frame
@@ -25,7 +26,7 @@ public class BacterialChemotaxis : MonoBehaviour
     private void swim()
     {
         Debug.Log("Swimming...");
-        transform.position += Vector3.forward * Time.deltaTime;
+        transform.position += Vector3.forward * speed * Time.deltaTime;
     }
 
     private void tumble()
