@@ -3,8 +3,8 @@ using System.Collections;
 
 public class DetectSugar : MonoBehaviour
 {
-    bool inSugar = false;
-    SugarGradient sugarGradient;
+    private bool inSugar = false;
+    private SugarGradient sugarGradient;
 
 	// Use this for initialization
 	void Start ()
