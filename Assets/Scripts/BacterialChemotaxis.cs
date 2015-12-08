@@ -9,7 +9,7 @@ public class BacterialChemotaxis : MonoBehaviour
 	void Start ()
     {
         speed = GetComponent<Ecoli>().getSpeed();
-	}
+    }
 
 	// Update is called once per frame
 	void Update ()

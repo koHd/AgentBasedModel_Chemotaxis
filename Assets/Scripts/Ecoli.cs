@@ -9,13 +9,7 @@ public class Ecoli : MonoBehaviour
 	void Start ()
     {
         speed = transform.localScale.z * 10;
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-
-	}
+    }
 
     public float getSpeed()
     {
