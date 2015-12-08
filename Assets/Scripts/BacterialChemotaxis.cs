@@ -6,7 +6,7 @@ public class BacterialChemotaxis : MonoBehaviour
     private float speed;
 
 	// Use this for initialization
-	void Start ()
+    void Start ()
     {
         speed = GetComponent<Ecoli>().getSpeed();
     }
