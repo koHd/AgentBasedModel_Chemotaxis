@@ -36,4 +36,9 @@ public class DetectSugar : MonoBehaviour
             sugarGradient = null;
         }
     }
+
+    public bool isInSugar()
+    {
+        return inSugar;
+    }
 }
