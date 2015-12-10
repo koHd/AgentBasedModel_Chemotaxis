@@ -4,18 +4,43 @@ using System.Collections;
 public class Ecoli : MonoBehaviour
 {
     private float speed, burstLength;
-    private bool inSugar;
+    private bool inSugar, moving;
 
-	// Use this for initialization
 	void Start ()
     {
         speed = transform.localScale.z * 10;
         burstLength = 1f;
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<SugarGradient>())
+        {
+            inSugar = true;
+            doSomething();
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (!moving)
+            doSomething();
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (inSugar)
+        {
+            inSugar = false;
+        }
+    }
+
     public void doSomething()
     {
-        StartCoroutine(swim());
+        if (inSugar & !moving)
+            StartCoroutine(swim());
+        else if (!moving)
+            StartCoroutine(tumble());
     }
 
     public IEnumerator swim()
@@ -24,26 +49,35 @@ public class Ecoli : MonoBehaviour
         float startTime = Time.time;
         while (burstLength > 0)
         {
+            moving = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
             burstLength -= Time.deltaTime;
 
             yield return null;
         }
+        moving = false;
         float totalTime = Time.time - startTime;
         burstLength = 1f;
         Debug.Log("Finished swimming after burst of " + burstLength + " seconds.");
     }
 
-    public void tumble()
+    public IEnumerator tumble()
     {
         Debug.Log("Tumbling...");
-        transform.Rotate(Vector3.forward, 200f * Time.deltaTime);
-    }
+        float startTime = Time.time;
+        while (burstLength > 0)
+        {
+            moving = true;
+            transform.Rotate(Vector3.forward, 200f * Time.deltaTime);
+            burstLength -= Time.deltaTime;
 
-    public void sugarSensor(bool inSugar)
-    {
-        this.inSugar = inSugar;
-        doSomething();
+            yield return null;
+        }
+        moving = false;
+        float totalTime = Time.time - startTime;
+        burstLength = 1f;
+        Debug.Log("Finished tumbling after burst of " + burstLength + " seconds.");
+        StartCoroutine(swim());
     }
 
     public float getSpeed()
