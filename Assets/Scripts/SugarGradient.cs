@@ -10,12 +10,6 @@ public class SugarGradient : MonoBehaviour
     {
         sugarOrigin = transform.position;
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-	
-	}
 
     public float getSugarConcentration(Vector3 position)
     {

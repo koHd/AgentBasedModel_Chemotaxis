@@ -3,42 +3,26 @@ using System.Collections;
 
 public class DetectSugar : MonoBehaviour
 {
-    private bool inSugar = false;
-    private SugarGradient sugarGradient;
+    private Ecoli ecoli;
 
-	// Use this for initialization
-	void Start ()
+    void Start()
     {
-        Debug.Log("Lookin' for sugar...");
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        if (inSugar)
-            Debug.Log("Sugar concentration: " + sugarGradient.getSugarConcentration(transform.position));
-	}
+        ecoli = GetComponent<Ecoli>();
+    }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<SugarGradient>())
         {
-            inSugar = true;
-            sugarGradient = other.GetComponent<SugarGradient>();
+            ecoli.sugarSensor(true);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (inSugar)
+        if (ecoli.isInSugar())
         {
-            inSugar = false;
-            sugarGradient = null;
+            ecoli.sugarSensor(false);
         }
-    }
-
-    public bool isInSugar()
-    {
-        return inSugar;
     }
 }
