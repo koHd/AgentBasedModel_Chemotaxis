@@ -6,7 +6,7 @@ public class Ecoli : MonoBehaviour
     private float speed, burstLength;
     private bool inSugar, moving;
 
-	void Start ()
+    void Start ()
     {
         speed = transform.localScale.z * 10;
         burstLength = 1f;
