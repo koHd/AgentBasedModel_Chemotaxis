@@ -7,9 +7,9 @@ An agent-based model of biological chemotaxis driven movement implemented with U
 * simple 3d environment [X]
 * dumb agent [X]
 * dumb agent with states and random movement [X]
-* autonomous agent with finite state machine and logical movement [current]
+* autonomous agent with finite state machine and logical movement [X]
   * expected completion date: 19/11/15
-* goal driven agent that simulates chemotaxis convincingly [ ]
+* goal driven agent that simulates chemotaxis convincingly [current]
   * expected completion date: 03/12/15
 * machine learning agent that can autonomously derive new tactics [ ]
   * expected completion date: 01/02/16
