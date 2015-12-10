@@ -10,9 +10,15 @@ An agent-based model of biological chemotaxis driven movement implemented with U
 * autonomous agent with finite state machine and logical movement [X]
   * expected completion date: 19/11/15
 * goal driven agent that simulates chemotaxis convincingly [current]
-  * expected completion date: 03/12/15
+  * Markov Decision Process
+    * Break behaviour into discrete actions [ ]
+    * Map world points as States [ ]
+    * Find a Reward algorithm that's based on sugar concentration in current state and the neighbour states [ ]
+    * Agent implements MDP with a given policy [ ]
+    * Have Agent new novel policies [ ]
+  * expected completion date: 14/02/16
 * machine learning agent that can autonomously derive new tactics [ ]
-  * expected completion date: 01/02/16
+  * expected completion date: 01/03/16
 
 ## Demo
 
