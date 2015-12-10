@@ -68,7 +68,8 @@ public class Ecoli : MonoBehaviour
         while (burstLength > 0)
         {
             moving = true;
-            transform.Rotate(Vector3.forward, 200f * Time.deltaTime);
+            float tumbleAmount = Random.Range(0f, 300f);
+            transform.Rotate(Vector3.forward, tumbleAmount * Time.deltaTime);
             burstLength -= Time.deltaTime;
 
             yield return null;
