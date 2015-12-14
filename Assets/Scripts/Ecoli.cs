@@ -3,13 +3,13 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private float speed, burstLength;
+    private float speed, runLength;
     private bool inSugar, moving;
 
     void Start ()
     {
         speed = transform.localScale.z * 10;
-        burstLength = 1f;
+        runLength = 1f;
     }
 
     void OnTriggerEnter(Collider other)
@@ -47,37 +47,37 @@ public class Ecoli : MonoBehaviour
     {
         Debug.Log("Swimming");
         float startTime = Time.time;
-        while (burstLength > 0)
+        while (runLength > 0)
         {
             moving = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
-            burstLength -= Time.deltaTime;
+            runLength -= Time.deltaTime;
 
             yield return null;
         }
         moving = false;
         float totalTime = Time.time - startTime;
-        burstLength = 1f;
-        Debug.Log("Finished swimming after burst of " + burstLength + " seconds.");
+        runLength = 1f;
+        Debug.Log("Finished swimming after burst of " + runLength + " seconds.");
     }
 
     public IEnumerator tumble()
     {
         Debug.Log("Tumbling...");
         float startTime = Time.time;
-        while (burstLength > 0)
+        while (runLength > 0)
         {
             moving = true;
             float tumbleAmount = Random.Range(0f, 300f);
             transform.Rotate(Vector3.forward, tumbleAmount * Time.deltaTime);
-            burstLength -= Time.deltaTime;
+            runLength -= Time.deltaTime;
 
             yield return null;
         }
         moving = false;
         float totalTime = Time.time - startTime;
-        burstLength = 1f;
-        Debug.Log("Finished tumbling after burst of " + burstLength + " seconds.");
+        runLength = 1f;
+        Debug.Log("Finished tumbling after burst of " + runLength + " seconds.");
         StartCoroutine(swim());
     }
 
