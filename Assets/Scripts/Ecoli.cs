@@ -3,13 +3,15 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private float speed, runLength;
-    private bool inSugar, moving;
+    private float speed, runLength, sugarConcentration;
+    private bool inSugar, moving, goingUpGradient;
 
     void Start ()
     {
         speed = transform.localScale.z * 10;
+        goingUpGradient = false;
         runLength = 1f;
+        sugarConcentration = 0f;
     }
 
     void OnTriggerEnter(Collider other)
@@ -23,9 +25,14 @@ public class Ecoli : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.GetComponent<SugarGradient>())
+        if (inSugar)
         {
             Debug.Log("Sugar concentration: " + other.GetComponent<SugarGradient>().getSugarConcentration(transform.position));
+            if (other.GetComponent<SugarGradient>().getSugarConcentration(transform.position) > sugarConcentration)
+                goingUpGradient = true;
+            else
+                goingUpGradient = false;
+            sugarConcentration = other.GetComponent<SugarGradient>().getSugarConcentration(transform.position);
         }
     }
 
@@ -40,6 +47,8 @@ public class Ecoli : MonoBehaviour
         if (inSugar)
         {
             inSugar = false;
+            goingUpGradient = false;
+            sugarConcentration = 0;
         }
     }
 
@@ -65,7 +74,17 @@ public class Ecoli : MonoBehaviour
         }
         moving = false;
         float totalTime = Time.time - startTime;
-        runLength = Random.Range(1f, 2f);
+        if (inSugar)
+        {
+            if (goingUpGradient)
+                runLength = Random.Range(3f, 4f);
+            else
+                runLength = Random.Range(0.1f, 0.3f);
+        } else
+        {
+            runLength = Random.Range(0.3f, 0.6f);
+        }
+
         Debug.Log("Finished swimming after burst of " + runLength + " seconds.");
     }
 
@@ -84,7 +103,7 @@ public class Ecoli : MonoBehaviour
         }
         moving = false;
         float totalTime = Time.time - startTime;
-        runLength = Random.Range(0.2f, 0.5f);
+        runLength = Random.Range(0.5f, 1f);
         Debug.Log("Finished tumbling after burst of " + runLength + " seconds.");
         StartCoroutine(swim());
     }
