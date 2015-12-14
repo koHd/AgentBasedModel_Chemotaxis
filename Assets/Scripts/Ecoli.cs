@@ -67,22 +67,10 @@ public class Ecoli : MonoBehaviour
             moving = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
             runLength -= Time.deltaTime;
-
-            if (inSugar)
-            {
-                Debug.Log("Sugar concentration: " + currentSugarConcentration);
-                goingUpGradient = (currentSugarConcentration > oldSugarConcentration) ? true : false;
-            }
-
             yield return null;
         }
         moving = false;
         float totalTime = Time.time - startTime;
-        if (inSugar)
-            runLength = goingUpGradient ? Random.Range(1f, 2f) : Random.Range(0.1f, 0.3f);
-        else
-            runLength = Random.Range(0.1f, 0.3f);
-
         Debug.Log("Finished swimming after burst of " + runLength + " seconds.");
         StartCoroutine(tumble());
     }
@@ -96,6 +84,16 @@ public class Ecoli : MonoBehaviour
             moving = true;
             transform.Rotate(Vector3.forward, 360 * Time.deltaTime);
             tumbleLength -= Time.deltaTime;
+            if (inSugar)
+            {
+                Debug.Log("Sugar concentration: " + currentSugarConcentration);
+                goingUpGradient = (currentSugarConcentration > oldSugarConcentration) ? true : false;
+                runLength = goingUpGradient ? Random.Range(1f, 2f) : Random.Range(0.1f, 0.3f);
+            }
+            else
+            {
+                runLength = Random.Range(0.1f, 0.3f);
+            }
 
             yield return null;
         }
