@@ -57,7 +57,7 @@ public class Ecoli : MonoBehaviour
         }
         moving = false;
         float totalTime = Time.time - startTime;
-        runLength = 1f;
+        runLength = Random.Range(1f, 2f);
         Debug.Log("Finished swimming after burst of " + runLength + " seconds.");
     }
 
@@ -76,7 +76,7 @@ public class Ecoli : MonoBehaviour
         }
         moving = false;
         float totalTime = Time.time - startTime;
-        runLength = 1f;
+        runLength = Random.Range(0.2f, 0.5f);
         Debug.Log("Finished tumbling after burst of " + runLength + " seconds.");
         StartCoroutine(swim());
     }
