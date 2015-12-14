@@ -22,7 +22,7 @@ An agent-based model of biological chemotaxis driven movement implemented with U
 
 ## Demo
 
-http://www.ec2-52-19-166-61.eu-west-1.compute.amazoneaws.com:8080/chemotaxis/
+http://ec2-52-19-166-61.eu-west-1.compute.amazonaws.com:8080/chemotaxis/
 
 ## Git remotes
 
