@@ -71,7 +71,7 @@ public class Ecoli : MonoBehaviour
             if (inSugar)
             {
                 Debug.Log("Sugar concentration: " + currentSugarConcentration);
-                goingUpGradient = (currentSugarConcentration > 1.0001 * oldSugarConcentration) ? true : false;
+                goingUpGradient = (currentSugarConcentration > oldSugarConcentration) ? true : false;
             }
 
             yield return null;
@@ -81,7 +81,7 @@ public class Ecoli : MonoBehaviour
         if (inSugar)
             runLength = goingUpGradient ? Random.Range(1f, 2f) : Random.Range(0.1f, 0.3f);
         else
-            runLength = Random.Range(0.1f, 0.5f);
+            runLength = Random.Range(0.1f, 0.3f);
 
         Debug.Log("Finished swimming after burst of " + runLength + " seconds.");
         StartCoroutine(tumble());
