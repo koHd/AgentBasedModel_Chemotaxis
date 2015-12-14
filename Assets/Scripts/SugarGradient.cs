@@ -13,6 +13,6 @@ public class SugarGradient : MonoBehaviour
 
     public float getSugarConcentration(Vector3 position)
     {
-        return 100 / Vector3.Distance(sugarOrigin, position);
+        return transform.localScale.magnitude / Vector3.Distance(sugarOrigin, position);
     }
 }

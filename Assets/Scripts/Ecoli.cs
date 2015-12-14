@@ -21,6 +21,14 @@ public class Ecoli : MonoBehaviour
         }
     }
 
+    void OnTriggerStay(Collider other)
+    {
+        if (other.GetComponent<SugarGradient>())
+        {
+            Debug.Log("Sugar concentration: " + other.GetComponent<SugarGradient>().getSugarConcentration(transform.position));
+        }
+    }
+
     void FixedUpdate()
     {
         if (!moving)
@@ -68,7 +76,7 @@ public class Ecoli : MonoBehaviour
         while (runLength > 0)
         {
             moving = true;
-            float tumbleAmount = Random.Range(0f, 300f);
+            float tumbleAmount = Random.Range(0f, 360f);
             transform.Rotate(Vector3.forward, tumbleAmount * Time.deltaTime);
             runLength -= Time.deltaTime;
 
