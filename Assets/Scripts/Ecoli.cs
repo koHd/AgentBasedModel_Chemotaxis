@@ -84,7 +84,7 @@ public class Ecoli : MonoBehaviour
             moving = true;
             transform.Rotate(Vector3.forward, 360 * Time.deltaTime);
             tumbleLength -= Time.deltaTime;
-            sampleSugarConcentration();
+            compareSugarConcentration();
 
             yield return null;
         }
@@ -104,7 +104,7 @@ public class Ecoli : MonoBehaviour
         return inSugar;
     }
 
-    public void sampleSugarConcentration()
+    public void compareSugarConcentration()
     {
         if (inSugar)
         {
