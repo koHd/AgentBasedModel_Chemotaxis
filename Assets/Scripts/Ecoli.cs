@@ -84,16 +84,7 @@ public class Ecoli : MonoBehaviour
             moving = true;
             transform.Rotate(Vector3.forward, 360 * Time.deltaTime);
             tumbleLength -= Time.deltaTime;
-            if (inSugar)
-            {
-                Debug.Log("Sugar concentration: " + currentSugarConcentration);
-                goingUpGradient = (currentSugarConcentration > oldSugarConcentration) ? true : false;
-                runLength = goingUpGradient ? Random.Range(1f, 2f) : Random.Range(0.1f, 0.3f);
-            }
-            else
-            {
-                runLength = Random.Range(0.1f, 0.3f);
-            }
+            sampleSugarConcentration();
 
             yield return null;
         }
@@ -111,5 +102,19 @@ public class Ecoli : MonoBehaviour
     public bool isInSugar()
     {
         return inSugar;
+    }
+
+    public void sampleSugarConcentration()
+    {
+        if (inSugar)
+        {
+            Debug.Log("Sugar concentration: " + currentSugarConcentration);
+            goingUpGradient = (currentSugarConcentration > oldSugarConcentration) ? true : false;
+            runLength = goingUpGradient ? Random.Range(1f, 2f) : Random.Range(0.1f, 0.3f);
+        }
+        else
+        {
+            runLength = Random.Range(0.1f, 0.3f);
+        }
     }
 }
