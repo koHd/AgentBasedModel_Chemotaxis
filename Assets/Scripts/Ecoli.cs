@@ -60,7 +60,7 @@ public class Ecoli : MonoBehaviour
 
     public IEnumerator swim()
     {
-        Debug.Log("Swimming");
+        //Debug.Log("Swimming");
         float startTime = Time.time;
         while (runLength > 0)
         {
@@ -77,10 +77,10 @@ public class Ecoli : MonoBehaviour
             if (goingUpGradient)
                 runLength = Random.Range(1f, 3f);
             else
-                runLength = Random.Range(0.1f, 0.2f);
+                runLength = Random.Range(0.1f, 0.3f);
         } else
         {
-            runLength = Random.Range(0.2f, 0.5f);
+            runLength = Random.Range(0.1f, 0.5f);
         }
 
         Debug.Log("Finished swimming after burst of " + runLength + " seconds.");
@@ -97,7 +97,7 @@ public class Ecoli : MonoBehaviour
 
     public IEnumerator tumble()
     {
-        Debug.Log("Tumbling...");
+        //Debug.Log("Tumbling...");
         float startTime = Time.time;
         while (tumbleLength > 0)
         {
