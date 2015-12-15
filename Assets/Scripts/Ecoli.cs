@@ -64,7 +64,9 @@ public class Ecoli : MonoBehaviour
         busy = false;
         float totalTime = Time.time - startTime;
         Debug.Log("Finished swimming after burst of " + runLength + " seconds.");
-        StartCoroutine(tumble());
+        compareSugarConcentration();
+        if (!goingUpGradient)
+            StartCoroutine(tumble());
     }
 
     public IEnumerator tumble()
@@ -76,7 +78,6 @@ public class Ecoli : MonoBehaviour
             busy = true;
             transform.Rotate(Vector3.forward, 360 * Time.deltaTime);
             tumbleLength -= Time.deltaTime;
-            compareSugarConcentration();
 
             yield return null;
         }
