@@ -10,8 +10,8 @@ public class Ecoli : MonoBehaviour
     {
         speed = transform.localScale.z * 10;
         goingUpGradient = false;
-        runLength = 1f;
-        tumbleLength = 1f;
+        runLength = Random.Range(0.1f, 0.5f);
+        tumbleLength = Random.Range(0.5f, 1f);
         oldSugarConcentration = 0f;
         currentSugarConcentration = 0f;
     }
