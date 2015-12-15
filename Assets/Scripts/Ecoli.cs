@@ -4,7 +4,7 @@ using System.Collections;
 public class Ecoli : MonoBehaviour
 {
     private float speed, runLength, tumbleLength, oldSugarConcentration, currentSugarConcentration;
-    private bool inSugar, moving, goingUpGradient;
+    private bool inSugar, busy, goingUpGradient;
 
     void Start ()
     {
@@ -35,7 +35,7 @@ public class Ecoli : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!moving)
+        if (!busy)
             StartCoroutine(swim()); ;
     }
 
@@ -56,12 +56,12 @@ public class Ecoli : MonoBehaviour
         float startTime = Time.time;
         while (runLength > 0)
         {
-            moving = true;
+            busy = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
             runLength -= Time.deltaTime;
             yield return null;
         }
-        moving = false;
+        busy = false;
         float totalTime = Time.time - startTime;
         Debug.Log("Finished swimming after burst of " + runLength + " seconds.");
         StartCoroutine(tumble());
@@ -73,14 +73,14 @@ public class Ecoli : MonoBehaviour
         float startTime = Time.time;
         while (tumbleLength > 0)
         {
-            moving = true;
+            busy = true;
             transform.Rotate(Vector3.forward, 360 * Time.deltaTime);
             tumbleLength -= Time.deltaTime;
             compareSugarConcentration();
 
             yield return null;
         }
-        moving = false;
+        busy = false;
         float totalTime = Time.time - startTime;
         tumbleLength = Random.Range(0.1f, 1.5f);
         Debug.Log("Finished tumbling after burst of " + tumbleLength + " seconds.");
