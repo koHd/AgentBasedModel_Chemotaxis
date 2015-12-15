@@ -21,7 +21,6 @@ public class Ecoli : MonoBehaviour
         if (other.GetComponent<SugarGradient>())
         {
             inSugar = true;
-            doSomething();
         }
     }
 
