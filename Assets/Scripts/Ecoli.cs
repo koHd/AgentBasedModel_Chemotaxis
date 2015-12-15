@@ -37,7 +37,7 @@ public class Ecoli : MonoBehaviour
     void FixedUpdate()
     {
         if (!moving)
-            doSomething();
+            StartCoroutine(swim()); ;
     }
 
     void OnTriggerExit(Collider other)
@@ -49,13 +49,6 @@ public class Ecoli : MonoBehaviour
             oldSugarConcentration = 0f;
             currentSugarConcentration = 0f;
         }
-    }
-
-    public void doSomething()
-    {
-        if (!moving)
-            StartCoroutine(swim());
-
     }
 
     public IEnumerator swim()
