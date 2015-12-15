@@ -107,7 +107,7 @@ public class Ecoli : MonoBehaviour
         }
         else
         {
-            runLength = Random.Range(0.1f, 0.3f);
+            runLength = Random.Range(0.1f, 1f);
         }
     }
 }
