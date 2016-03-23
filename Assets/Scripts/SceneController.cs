@@ -14,6 +14,7 @@ public class SceneController : MonoBehaviour
 
     void Start()
     {
+        numEcoliInChemical = 0;
         startTime = Time.time;
         ecoli = new GameObject[50];
         for (int i = 0; i < ecoli.Length; i++)
@@ -28,13 +29,11 @@ public class SceneController : MonoBehaviour
 
     void Update()
     {
-        numEcoliInChemical = 0;
-        for (int i = 0; i < ecoli.Length; i++)
+        if (numEcoliInChemical != Ecoli.getNumInChemical())
         {
-            if (ecoli[i].GetComponent<Ecoli>().getInChemical())
-                numEcoliInChemical++;
+            numEcoliInChemical = Ecoli.getNumInChemical();
+            Debug.Log("Number of E. coli in chemical: " + numEcoliInChemical);
         }
-        Debug.Log("Number of E. coli in chemical: " + numEcoliInChemical);
         timeElapsed = timeElapsed - startTime;
     }
 }

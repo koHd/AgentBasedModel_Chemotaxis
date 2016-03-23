@@ -5,6 +5,7 @@ public class Ecoli : MonoBehaviour
 {
     private float speed, runInterval, tumbleInterval, previousChemicalMeasure, currentChemicalMeasure;
     private bool inChemical, busy, goingUpGradient;
+    private static int numInChemical;
 
     void Start ()
     {
@@ -17,7 +18,7 @@ public class Ecoli : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-
+        numInChemical++;
     }
 
     void OnTriggerStay(Collider other)
@@ -42,6 +43,7 @@ public class Ecoli : MonoBehaviour
     {
         if (inChemical)
         {
+            numInChemical--;
             inChemical = false;
             goingUpGradient = false;
             previousChemicalMeasure = 0f;
@@ -107,5 +109,10 @@ public class Ecoli : MonoBehaviour
     public bool getInChemical()
     {
         return inChemical;
+    }
+
+    public static int getNumInChemical()
+    {
+        return numInChemical;
     }
 }
