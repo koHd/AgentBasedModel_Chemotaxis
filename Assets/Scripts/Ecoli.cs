@@ -3,15 +3,16 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private float speed, runLength, tumbleLength, previousChemicalMeasure, currentChemicalMeasure;
+    private float speed, runInterval, tumbleInterval, previousChemicalMeasure, currentChemicalMeasure;
     private bool inSugar, busy, goingUpGradient;
+    private GameObject chemical;
 
     void Start ()
     {
         speed = transform.localScale.z * 10;
         goingUpGradient = false;
-        runLength = Random.Range(0.1f, 0.5f);
-        tumbleLength = Random.Range(0.5f, 1f);
+        runInterval = Random.Range(0.1f, 0.5f);
+        tumbleInterval = Random.Range(0.5f, 1f);
         previousChemicalMeasure = 0f;
         currentChemicalMeasure = 0f;
     }
@@ -55,16 +56,16 @@ public class Ecoli : MonoBehaviour
     {
         //Debug.Log("Swimming");
         float startTime = Time.time;
-        while (runLength > 0)
+        while (runInterval > 0)
         {
             busy = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
-            runLength -= Time.deltaTime;
+            runInterval -= Time.deltaTime;
             yield return null;
         }
         busy = false;
         float totalTime = Time.time - startTime;
-        Debug.Log("Finished swimming after burst of " + runLength + " seconds.");
+        Debug.Log("Finished swimming after burst of " + runInterval + " seconds.");
         setRunLength();
         if (!goingUpGradient)
             StartCoroutine(tumble());
@@ -74,18 +75,18 @@ public class Ecoli : MonoBehaviour
     {
         //Debug.Log("Tumbling...");
         float startTime = Time.time;
-        while (tumbleLength > 0)
+        while (tumbleInterval > 0)
         {
             busy = true;
             transform.Rotate(Vector3.forward, 360 * Time.deltaTime);
-            tumbleLength -= Time.deltaTime;
+            tumbleInterval -= Time.deltaTime;
 
             yield return null;
         }
         busy = false;
         float totalTime = Time.time - startTime;
-        tumbleLength = Random.Range(0.1f, 1.5f);
-        Debug.Log("Finished tumbling after burst of " + tumbleLength + " seconds.");
+        tumbleInterval = Random.Range(0.1f, 1.5f);
+        Debug.Log("Finished tumbling after burst of " + tumbleInterval + " seconds.");
     }
 
     public float getSpeed()
@@ -104,11 +105,11 @@ public class Ecoli : MonoBehaviour
         {
             Debug.Log("Sugar concentration: " + currentChemicalMeasure);
             goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
-            runLength = goingUpGradient ? Random.Range(1f, 2f) : Random.Range(0.1f, 0.3f);
+            runInterval = goingUpGradient ? Random.Range(1f, 2f) : Random.Range(0.1f, 0.3f);
         }
         else
         {
-            runLength = Random.Range(0.1f, 1f);
+            runInterval = Random.Range(0.1f, 1f);
         }
     }
 }
