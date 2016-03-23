@@ -23,6 +23,7 @@ namespace Assets.Scripts
             }
             _chemical = Instantiate(checmicalPrefab) as GameObject;
             _chemical.transform.localScale += new Vector3(100.0f, 0, 100.0f);
+            _chemical.GetComponent<Chemical>().setChemotaxisType(false);
         }
 
         void Update()

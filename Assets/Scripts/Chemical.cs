@@ -5,7 +5,7 @@ public class Chemical : MonoBehaviour {
 
     private Vector3 origin;
     private float concentration;
-    private bool attractant;
+    private bool chemotaxisType;
 
     // Use this for initialization
     void Start()
@@ -17,4 +17,16 @@ public class Chemical : MonoBehaviour {
     {
         return transform.localScale.magnitude / Vector3.Distance(origin, position);
     }
+
+    public void setChemotaxisType(bool chemotaxisType)
+    {
+        this.chemotaxisType = chemotaxisType;
+    }
+
+    public bool getChemotaxisType()
+    {
+        return chemotaxisType;
+    }
+
+
 }

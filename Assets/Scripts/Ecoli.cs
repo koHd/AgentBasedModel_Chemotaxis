@@ -29,7 +29,8 @@ public class Ecoli : MonoBehaviour
         if (other.GetComponent<Chemical>())
         {
             oldSugarConcentration = currentSugarConcentration;
-            currentSugarConcentration = other.GetComponent<Chemical>().getConcentration(transform.position);
+            float concentration = other.GetComponent<Chemical>().getConcentration(transform.position);
+            currentSugarConcentration = other.GetComponent<Chemical>().getChemotaxisType() ? concentration : -concentration;
         }
     }
 
