@@ -64,7 +64,7 @@ public class Ecoli : MonoBehaviour
         busy = false;
         float totalTime = Time.time - startTime;
         Debug.Log("Finished swimming after burst of " + runLength + " seconds.");
-        compareSugarConcentration();
+        setRunLength();
         if (!goingUpGradient)
             StartCoroutine(tumble());
     }
@@ -97,7 +97,7 @@ public class Ecoli : MonoBehaviour
         return inSugar;
     }
 
-    public void compareSugarConcentration()
+    public void setRunLength()
     {
         if (inSugar)
         {
