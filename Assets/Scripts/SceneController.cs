@@ -8,8 +8,8 @@ namespace Assets.Scripts
         float startTime;
         float timeElapsed;
         [SerializeField]
-        private GameObject ecoliPrefab;
-        private GameObject _ecoli;
+        private GameObject ecoliPrefab, checmicalPrefab;
+        private GameObject _ecoli, _chemical;
         private int numEcoli;
 
         void Start()
@@ -21,6 +21,8 @@ namespace Assets.Scripts
                 _ecoli = Instantiate(ecoliPrefab) as GameObject;
                 _ecoli.transform.position = new Vector3(0, 0.5f, -40f);
             }
+            _chemical = Instantiate(checmicalPrefab) as GameObject;
+            _chemical.transform.localScale += new Vector3(100.0f, 0, 100.0f);
         }
 
         void Update()
