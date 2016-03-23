@@ -5,7 +5,6 @@ public class Ecoli : MonoBehaviour
 {
     private float speed, runInterval, tumbleInterval, previousChemicalMeasure, currentChemicalMeasure;
     private bool inChemical, busy, goingUpGradient;
-    private GameObject chemical;
 
     void Start ()
     {
@@ -18,16 +17,14 @@ public class Ecoli : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Chemical>())
-        {
-            inChemical = true;
-        }
+
     }
 
     void OnTriggerStay(Collider other)
     {
         if (other.GetComponent<Chemical>())
         {
+            inChemical = true;
             previousChemicalMeasure = currentChemicalMeasure;
             float concentration = other.GetComponent<Chemical>().getConcentration(transform.position);
             currentChemicalMeasure = other.GetComponent<Chemical>().getChemotaxisType() ? concentration : -concentration;
@@ -87,15 +84,28 @@ public class Ecoli : MonoBehaviour
 
     public void setRunAndTumbleIntervals()
     {
-        if (inChemical && goingUpGradient)
+        if (inChemical)
         {
-            runInterval = Random.Range(1.0f, 3.04f);
-            tumbleInterval = Random.Range(0.1f, 1.5f);
+            if (goingUpGradient)
+            {
+                runInterval = Random.Range(1.0f, 3.04f);
+                tumbleInterval = Random.Range(0.05f, 0.20f);
+            }
+            else
+            {
+                runInterval = Random.Range(1.0f, 2.04f);
+                tumbleInterval = Random.Range(0.08f, 0.25f);
+            }
         }
         else
         {
             runInterval = Random.Range(0.0f, 2.04f);
             tumbleInterval = Random.Range(0.14f, 0.33f);
         }
+    }
+
+    public bool getInChemical()
+    {
+        return inChemical;
     }
 }
