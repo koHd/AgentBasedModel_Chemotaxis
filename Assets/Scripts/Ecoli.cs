@@ -36,7 +36,7 @@ public class Ecoli : MonoBehaviour
     {
         goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
         if (!busy)
-            StartCoroutine(swim()); ;
+            StartCoroutine(swim());
     }
 
     void OnTriggerExit(Collider other)
@@ -64,8 +64,7 @@ public class Ecoli : MonoBehaviour
         busy = false;
         float totalTime = Time.time - startTime;
         setRunAndTumbleIntervals();
-        if (!goingUpGradient)
-            StartCoroutine(tumble());
+        StartCoroutine(tumble());
     }
 
     public IEnumerator tumble()
@@ -90,7 +89,7 @@ public class Ecoli : MonoBehaviour
         {
             if (goingUpGradient)
             {
-                runInterval = Random.Range(1.0f, 3.04f);
+                runInterval = Random.Range(1.0f, 5.52f);
                 tumbleInterval = Random.Range(0.05f, 0.20f);
             }
             else
