@@ -11,8 +11,7 @@ public class Ecoli : MonoBehaviour
     {
         speed = transform.localScale.z * 10;
         goingUpGradient = false;
-        runInterval = Random.Range(0.0f, 2.04f);
-        tumbleInterval = Random.Range(0.14f, 0.33f);
+        setRunAndTumbleIntervals();
         previousChemicalMeasure = 0f;
         currentChemicalMeasure = 0f;
     }
@@ -37,6 +36,7 @@ public class Ecoli : MonoBehaviour
 
     void FixedUpdate()
     {
+        goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
         if (!busy)
             StartCoroutine(swim()); ;
     }
@@ -54,7 +54,6 @@ public class Ecoli : MonoBehaviour
 
     public IEnumerator swim()
     {
-        //Debug.Log("Swimming");
         float startTime = Time.time;
         while (runInterval > 0)
         {
@@ -65,14 +64,13 @@ public class Ecoli : MonoBehaviour
         }
         busy = false;
         float totalTime = Time.time - startTime;
-        setRunInterval();
+        setRunAndTumbleIntervals();
         if (!goingUpGradient)
             StartCoroutine(tumble());
     }
 
     public IEnumerator tumble()
     {
-        //Debug.Log("Tumbling...");
         float startTime = Time.time;
         while (tumbleInterval > 0)
         {
@@ -84,19 +82,20 @@ public class Ecoli : MonoBehaviour
         }
         busy = false;
         float totalTime = Time.time - startTime;
-        tumbleInterval = Random.Range(0.1f, 1.5f);
+        setRunAndTumbleIntervals();
     }
 
-    public void setRunInterval()
+    public void setRunAndTumbleIntervals()
     {
-        if (inChemical)
+        if (inChemical && goingUpGradient)
         {
-            goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
-            runInterval = goingUpGradient ? Random.Range(1.0f, 3.04f) : Random.Range(0.0f, 2.04f);
+            runInterval = Random.Range(1.0f, 3.04f);
+            tumbleInterval = Random.Range(0.1f, 1.5f);
         }
         else
         {
             runInterval = Random.Range(0.0f, 2.04f);
+            tumbleInterval = Random.Range(0.14f, 0.33f);
         }
     }
 }
