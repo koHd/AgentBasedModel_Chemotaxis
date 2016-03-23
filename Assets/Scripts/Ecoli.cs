@@ -18,7 +18,7 @@ public class Ecoli : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<SugarGradient>())
+        if (other.GetComponent<Chemical>())
         {
             inSugar = true;
         }
@@ -26,10 +26,10 @@ public class Ecoli : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.GetComponent<SugarGradient>())
+        if (other.GetComponent<Chemical>())
         {
             oldSugarConcentration = currentSugarConcentration;
-            currentSugarConcentration = other.GetComponent<SugarGradient>().getSugarConcentration(transform.position);
+            currentSugarConcentration = other.GetComponent<Chemical>().getConcentration(transform.position);
         }
     }
 
