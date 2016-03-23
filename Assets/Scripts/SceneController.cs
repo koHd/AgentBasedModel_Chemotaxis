@@ -6,6 +6,7 @@ namespace Assets.Scripts
     public class SceneController : MonoBehaviour
     {
         float startTime;
+        float timeElapsed;
         [SerializeField]
         private GameObject ecoliPrefab;
         private GameObject _ecoli;
@@ -14,17 +15,17 @@ namespace Assets.Scripts
         void Start()
         {
             startTime = Time.time;
-            numEcoli = 20;
+            numEcoli = 50;
             for (int i = 0; i < numEcoli; i++)
             {
                 _ecoli = Instantiate(ecoliPrefab) as GameObject;
-                _ecoli.transform.position = new Vector3(0, 0.5f, -30f);
+                _ecoli.transform.position = new Vector3(0, 0.5f, -40f);
             }
         }
 
         void Update()
         {
-            Debug.Log("Time elapsed: " + (Time.time - startTime));
+            timeElapsed = timeElapsed - startTime;
         }
     }
 }
