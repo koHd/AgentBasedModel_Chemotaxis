@@ -1,36 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace Assets.Scripts
+
+public class SceneController : MonoBehaviour
 {
-    public class SceneController : MonoBehaviour
+    float startTime;
+    float timeElapsed;
+    [SerializeField]
+    private GameObject ecoliPrefab, checmicalPrefab;
+    private GameObject _chemical;
+    private GameObject[] ecoli;
+    private int numEcoliInChemical;
+
+    void Start()
     {
-        float startTime;
-        float timeElapsed;
-        [SerializeField]
-        private GameObject ecoliPrefab, checmicalPrefab;
-        private GameObject _ecoli, _chemical;
-        private int numEcoli;
-
-        void Start()
+        startTime = Time.time;
+        ecoli = new GameObject[50];
+        for (int i = 0; i < ecoli.Length; i++)
         {
-            startTime = Time.time;
-            numEcoli = 50;
-            for (int i = 0; i < numEcoli; i++)
-            {
-                _ecoli = Instantiate(ecoliPrefab) as GameObject;
-                _ecoli.transform.position = new Vector3(0, 0.5f, -40f);
-            }
-            _chemical = Instantiate(checmicalPrefab) as GameObject;
-            _chemical.transform.localScale += new Vector3(100.0f, 0, 100.0f);
-            _chemical.GetComponent<Chemical>().setChemotaxisType(false);
-            _chemical.transform.localScale += new Vector3(100.0f, 0, 100.0f);
-            _chemical.GetComponent<Chemical>().setChemotaxisType(true);
+            ecoli[i] = Instantiate(ecoliPrefab) as GameObject;
+            ecoli[i].transform.position = new Vector3(0, 0.5f, -40f);
         }
+        _chemical = Instantiate(checmicalPrefab) as GameObject;
+        _chemical.transform.localScale += new Vector3(50.0f, 0, 50.0f);
+        _chemical.GetComponent<Chemical>().setChemotaxisType(true);
+    }
 
-        void Update()
+    void Update()
+    {
+        numEcoliInChemical = 0;
+        for (int i = 0; i < ecoli.Length; i++)
         {
-            timeElapsed = timeElapsed - startTime;
+            if (ecoli[i].GetComponent<Ecoli>().getInChemical())
+                numEcoliInChemical++;
         }
+        Debug.Log("Number of E. coli in chemical: " + numEcoliInChemical);
+        timeElapsed = timeElapsed - startTime;
     }
 }
