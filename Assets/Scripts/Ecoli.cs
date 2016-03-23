@@ -4,15 +4,15 @@ using System.Collections;
 public class Ecoli : MonoBehaviour
 {
     private float speed, runInterval, tumbleInterval, previousChemicalMeasure, currentChemicalMeasure;
-    private bool inSugar, busy, goingUpGradient;
+    private bool inChemical, busy, goingUpGradient;
     private GameObject chemical;
 
     void Start ()
     {
         speed = transform.localScale.z * 10;
         goingUpGradient = false;
-        runInterval = Random.Range(0.1f, 0.5f);
-        tumbleInterval = Random.Range(0.5f, 1f);
+        runInterval = Random.Range(0.0f, 2.04f);
+        tumbleInterval = Random.Range(0.14f, 0.33f);
         previousChemicalMeasure = 0f;
         currentChemicalMeasure = 0f;
     }
@@ -21,7 +21,7 @@ public class Ecoli : MonoBehaviour
     {
         if (other.GetComponent<Chemical>())
         {
-            inSugar = true;
+            inChemical = true;
         }
     }
 
@@ -43,9 +43,9 @@ public class Ecoli : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (inSugar)
+        if (inChemical)
         {
-            inSugar = false;
+            inChemical = false;
             goingUpGradient = false;
             previousChemicalMeasure = 0f;
             currentChemicalMeasure = 0f;
@@ -65,8 +65,7 @@ public class Ecoli : MonoBehaviour
         }
         busy = false;
         float totalTime = Time.time - startTime;
-        Debug.Log("Finished swimming after burst of " + runInterval + " seconds.");
-        setRunLength();
+        setRunInterval();
         if (!goingUpGradient)
             StartCoroutine(tumble());
     }
@@ -86,30 +85,18 @@ public class Ecoli : MonoBehaviour
         busy = false;
         float totalTime = Time.time - startTime;
         tumbleInterval = Random.Range(0.1f, 1.5f);
-        Debug.Log("Finished tumbling after burst of " + tumbleInterval + " seconds.");
     }
 
-    public float getSpeed()
+    public void setRunInterval()
     {
-        return speed;
-    }
-
-    public bool isInSugar()
-    {
-        return inSugar;
-    }
-
-    public void setRunLength()
-    {
-        if (inSugar)
+        if (inChemical)
         {
-            Debug.Log("Sugar concentration: " + currentChemicalMeasure);
             goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
-            runInterval = goingUpGradient ? Random.Range(1f, 2f) : Random.Range(0.1f, 0.3f);
+            runInterval = goingUpGradient ? Random.Range(1.0f, 3.04f) : Random.Range(0.0f, 2.04f);
         }
         else
         {
-            runInterval = Random.Range(0.1f, 1f);
+            runInterval = Random.Range(0.0f, 2.04f);
         }
     }
 }
