@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private float speed, runLength, tumbleLength, oldSugarConcentration, currentSugarConcentration;
+    private float speed, runLength, tumbleLength, previousChemicalMeasure, currentChemicalMeasure;
     private bool inSugar, busy, goingUpGradient;
 
     void Start ()
@@ -12,8 +12,8 @@ public class Ecoli : MonoBehaviour
         goingUpGradient = false;
         runLength = Random.Range(0.1f, 0.5f);
         tumbleLength = Random.Range(0.5f, 1f);
-        oldSugarConcentration = 0f;
-        currentSugarConcentration = 0f;
+        previousChemicalMeasure = 0f;
+        currentChemicalMeasure = 0f;
     }
 
     void OnTriggerEnter(Collider other)
@@ -28,9 +28,9 @@ public class Ecoli : MonoBehaviour
     {
         if (other.GetComponent<Chemical>())
         {
-            oldSugarConcentration = currentSugarConcentration;
+            previousChemicalMeasure = currentChemicalMeasure;
             float concentration = other.GetComponent<Chemical>().getConcentration(transform.position);
-            currentSugarConcentration = other.GetComponent<Chemical>().getChemotaxisType() ? concentration : -concentration;
+            currentChemicalMeasure = other.GetComponent<Chemical>().getChemotaxisType() ? concentration : -concentration;
         }
     }
 
@@ -46,8 +46,8 @@ public class Ecoli : MonoBehaviour
         {
             inSugar = false;
             goingUpGradient = false;
-            oldSugarConcentration = 0f;
-            currentSugarConcentration = 0f;
+            previousChemicalMeasure = 0f;
+            currentChemicalMeasure = 0f;
         }
     }
 
@@ -102,8 +102,8 @@ public class Ecoli : MonoBehaviour
     {
         if (inSugar)
         {
-            Debug.Log("Sugar concentration: " + currentSugarConcentration);
-            goingUpGradient = (currentSugarConcentration > oldSugarConcentration) ? true : false;
+            Debug.Log("Sugar concentration: " + currentChemicalMeasure);
+            goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
             runLength = goingUpGradient ? Random.Range(1f, 2f) : Random.Range(0.1f, 0.3f);
         }
         else
