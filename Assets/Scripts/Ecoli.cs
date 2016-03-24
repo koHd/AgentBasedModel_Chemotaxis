@@ -3,51 +3,53 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private float speed, runInterval, tumbleInterval, previousChemicalMeasure, currentChemicalMeasure;
-    private bool inChemical, busy, goingUpGradient;
-    private static int numInChemical;
+    private float speed, runInterval, tumbleInterval;
+    private int previousChemicalMeasure, currentChemicalMeasure;
+    private bool inAttractant, busy, goingUpGradient;
+    private Collider curChemical;
+    private static int numInAttractant;
 
-    void Start ()
+    void Start () // initialise E. coli
     {
-        speed = transform.localScale.z * 10;
+        speed = transform.localScale.z * 10; // E. coli can swim ten body lengths per second
         goingUpGradient = false;
+        previousChemicalMeasure = 0;
+        currentChemicalMeasure = 0;
         setRunAndTumbleIntervals();
-        previousChemicalMeasure = 0f;
-        currentChemicalMeasure = 0f;
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        numInChemical++;
-    }
-
-    void OnTriggerStay(Collider other)
+    void OnTriggerEnter(Collider other) // E. coli detects some new medium in the environment
     {
         if (other.GetComponent<Chemical>())
         {
-            inChemical = true;
-            previousChemicalMeasure = currentChemicalMeasure;
-            float concentration = other.GetComponent<Chemical>().getConcentration(transform.position);
-            currentChemicalMeasure = other.GetComponent<Chemical>().getChemotaxisType() ? concentration : -concentration;
+            curChemical = other;
+            updateChemicalSamples();
+            if (inAttractant) numInAttractant++;
         }
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
         if (!busy)
+        {
+            setRunAndTumbleIntervals();
             StartCoroutine(swim());
+        }
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other) // E. coli has detected it has left some medium
     {
-        if (inChemical)
+        if (curChemical)
         {
-            numInChemical--;
-            inChemical = false;
+            curChemical = null;
             goingUpGradient = false;
-            previousChemicalMeasure = 0f;
-            currentChemicalMeasure = 0f;
+            previousChemicalMeasure = 0;
+            currentChemicalMeasure = 0;
+            if (inAttractant)
+            {
+                numInAttractant--;
+                inAttractant = false;
+            }
         }
     }
 
@@ -63,8 +65,9 @@ public class Ecoli : MonoBehaviour
         }
         busy = false;
         float totalTime = Time.time - startTime;
-        setRunAndTumbleIntervals();
-        StartCoroutine(tumble());
+        if (curChemical) updateChemicalSamples();
+        if (!goingUpGradient) StartCoroutine(tumble());
+
     }
 
     public IEnumerator tumble()
@@ -73,45 +76,49 @@ public class Ecoli : MonoBehaviour
         while (tumbleInterval > 0)
         {
             busy = true;
-            transform.Rotate(Vector3.forward, 360 * Time.deltaTime);
+            transform.Rotate(Vector3.forward, 720 * Time.deltaTime);
             tumbleInterval -= Time.deltaTime;
 
             yield return null;
         }
         busy = false;
         float totalTime = Time.time - startTime;
-        setRunAndTumbleIntervals();
+    }
+
+
+    public void updateChemicalSamples()
+    {
+        int concentration = curChemical.GetComponent<Chemical>().getConcentration(transform.position);
+        previousChemicalMeasure = currentChemicalMeasure;
+        currentChemicalMeasure = curChemical.GetComponent<Chemical>().getChemotaxisType() ? concentration : -concentration;
+        inAttractant = (currentChemicalMeasure > 0) ? true : false;
+        goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
+
     }
 
     public void setRunAndTumbleIntervals()
     {
-        if (inChemical)
+        if (inAttractant && goingUpGradient)
         {
-            if (goingUpGradient)
-            {
-                runInterval = Random.Range(1.0f, 5.52f);
-                tumbleInterval = Random.Range(0.05f, 0.20f);
-            }
-            else
-            {
-                runInterval = Random.Range(1.0f, 2.04f);
-                tumbleInterval = Random.Range(0.08f, 0.25f);
-            }
+            runInterval = Random.Range(2.0f, 5.52f);
+            tumbleInterval = Random.Range(0.0f, 0.05f);
+
         }
-        else
+        else // baseline search/avoidance behaviour
         {
             runInterval = Random.Range(0.0f, 2.04f);
             tumbleInterval = Random.Range(0.14f, 0.33f);
         }
     }
 
-    public bool getInChemical()
+    public bool getInAttractant()
     {
-        return inChemical;
+        return inAttractant;
     }
 
-    public static int getNumInChemical()
+    public static int getNumInAttractant()
     {
-        return numInChemical;
+        return numInAttractant;
     }
+
 }
