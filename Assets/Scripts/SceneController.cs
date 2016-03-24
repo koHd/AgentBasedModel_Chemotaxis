@@ -53,11 +53,11 @@ public class SceneController : MonoBehaviour
             float cointToss = 1.0f;
             if (cointToss >= 0.5f)
             {
-                chemicals[i].GetComponent<Chemical>().setChemotaxisType(true);
+                chemicals[i].GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
             }
             else
             {
-                chemicals[i].GetComponent<Chemical>().setChemotaxisType(false);
+                chemicals[i].GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Repellent);
             }
         }
     }

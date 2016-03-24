@@ -3,9 +3,11 @@ using System.Collections;
 
 public class Chemical : MonoBehaviour {
 
+    public enum BacteriaReaction { Attractant, Neutral, Repellent }
+
     private Vector3 origin;
     private float concentration;
-    private bool chemotaxisType;
+    private BacteriaReaction ecoliReaction;
 
     // Use this for initialization
     void Start()
@@ -18,14 +20,14 @@ public class Chemical : MonoBehaviour {
         return (int) (transform.localScale.magnitude / Vector3.Distance(origin, position));
     }
 
-    public void setChemotaxisType(bool chemotaxisType)
+    public void setEcoliReaction(BacteriaReaction reaction)
     {
-        this.chemotaxisType = chemotaxisType;
+        this.ecoliReaction = reaction;
     }
 
-    public bool getChemotaxisType()
+    public BacteriaReaction getEcoliReaction()
     {
-        return chemotaxisType;
+        return ecoliReaction;
     }
 
 

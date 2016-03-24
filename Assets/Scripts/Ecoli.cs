@@ -90,7 +90,7 @@ public class Ecoli : MonoBehaviour
     {
         int concentration = curChemical.GetComponent<Chemical>().getConcentration(transform.position);
         previousChemicalMeasure = currentChemicalMeasure;
-        currentChemicalMeasure = curChemical.GetComponent<Chemical>().getChemotaxisType() ? concentration : -concentration;
+        currentChemicalMeasure = (curChemical.GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant)  ? concentration : -concentration;
         inAttractant = (currentChemicalMeasure > 0) ? true : false;
         goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
 
