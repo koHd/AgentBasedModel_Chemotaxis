@@ -30,6 +30,7 @@ public class Ecoli : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Number of E. coli in attractant: " + numInAttractant);
         if (!busy)
         {
             setRunAndTumbleIntervals();
