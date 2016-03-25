@@ -25,12 +25,12 @@ public class Ecoli : MonoBehaviour
             curChemical = other;
             updateChemicalSamples();
             if (inAttractant) numInAttractant++;
+            Debug.Log("Number of E. coli in attractant: " + numInAttractant);
         }
     }
 
     void Update()
     {
-        Debug.Log("Number of E. coli in attractant: " + numInAttractant);
         if (!busy)
         {
             setRunAndTumbleIntervals();
@@ -50,6 +50,7 @@ public class Ecoli : MonoBehaviour
             {
                 numInAttractant--;
                 inAttractant = false;
+                Debug.Log("Number of E. coli in attractant: " + numInAttractant);
             }
         }
     }
