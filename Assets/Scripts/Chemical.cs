@@ -23,12 +23,12 @@ public class Chemical : MonoBehaviour {
     public void setEcoliReaction(BacteriaReaction reaction)
     {
         this.ecoliReaction = reaction;
+        if (reaction == BacteriaReaction.Repellent) GetComponent<Renderer>().material.SetColor("_Color", Color.red);
     }
 
     public BacteriaReaction getEcoliReaction()
     {
         return ecoliReaction;
     }
-
 
 }
