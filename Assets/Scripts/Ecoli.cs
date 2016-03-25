@@ -11,7 +11,7 @@ public class Ecoli : MonoBehaviour
 
     void Start () // initialise E. coli
     {
-        speed = transform.localScale.z * 10; // E. coli can swim ten body lengths per second
+        speed = 20; // E. coli can swim ~20um/s
         goingUpGradient = false;
         previousChemicalMeasure = 0;
         currentChemicalMeasure = 0;
