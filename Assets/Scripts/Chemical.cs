@@ -15,9 +15,9 @@ public class Chemical : MonoBehaviour {
         origin = transform.position;
     }
 
-    public int getConcentration(Vector3 position)
+    public float getConcentration(Vector3 position)
     {
-        return (int) (transform.localScale.magnitude / Vector3.Distance(origin, position));
+        return transform.localScale.magnitude / Vector3.Distance(origin, position);
     }
 
     public void setEcoliReaction(BacteriaReaction reaction)

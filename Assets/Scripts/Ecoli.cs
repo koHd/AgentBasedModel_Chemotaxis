@@ -3,10 +3,10 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private float speed, runInterval, tumbleInterval;
-    private int previousChemicalMeasure, currentChemicalMeasure;
+    private float speed, runInterval, tumbleInterval, previousChemicalMeasure, currentChemicalMeasure;
     private bool inAttractant, busy, goingUpGradient;
     private Collider curChemical;
+
     private static int numInAttractant;
 
     void Start () // initialise E. coli
@@ -88,7 +88,7 @@ public class Ecoli : MonoBehaviour
 
     public void updateChemicalSamples()
     {
-        int concentration = curChemical.GetComponent<Chemical>().getConcentration(transform.position);
+        float concentration = curChemical.GetComponent<Chemical>().getConcentration(transform.position);
         previousChemicalMeasure = currentChemicalMeasure;
         currentChemicalMeasure = (curChemical.GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant)  ? concentration : -concentration;
         inAttractant = (currentChemicalMeasure > 0) ? true : false;
