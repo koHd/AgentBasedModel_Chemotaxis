@@ -23,12 +23,12 @@ public class Agar : MonoBehaviour {
         {
             chemicals[i] = Instantiate(chemicalPrefab) as GameObject;
             numChemicals++;
-            chemicals[i].transform.position = new Vector3(0, 0, 0);
-            float concentration = 100;
+            chemicals[i].GetComponent<Chemical>().setOrigin(new Vector3(Random.Range(-1000, 1000), 0, Random.Range(-500, 500)));
+            float concentration = Random.Range(1000, 1000);
             chemicals[i].GetComponent<Chemical>().setConcentration(concentration);
             chemicals[i].transform.localScale += new Vector3(concentration, 100, concentration);
             float cointToss = Random.Range(0.0f, 1.0f);
-            if (cointToss >= 0.0f)
+            if (cointToss >= 0.5f)
             {
                 chemicals[i].GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
             }
@@ -39,13 +39,13 @@ public class Agar : MonoBehaviour {
         }
     }
 
-    public int sample(Vector3 location)
+    public float sample(Vector3 location)
     {
-        int totalSample = 0;
+        float totalSample = 0;
         if (chemicals != null)
         {
-            int curSample = 0;
-            int concentration = 0;
+            float curSample = 0;
+            float concentration = 0;
             for (int i = 0; i < chemicals.Length; i++)
             {
                 curSample = 0;

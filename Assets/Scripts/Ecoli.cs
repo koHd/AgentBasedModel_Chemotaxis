@@ -5,7 +5,7 @@ public class Ecoli : MonoBehaviour
 {
     private float speed = 20;
     private float runInterval, tumbleInterval;
-    private int previousChemicalMeasure, currentChemicalMeasure;
+    private float previousChemicalMeasure, currentChemicalMeasure;
     private bool wasInAttractant, currentlyInAttractant, busy, goingUpGradient;
     private Collider environment;
 
@@ -71,14 +71,17 @@ public class Ecoli : MonoBehaviour
         wasInAttractant = currentlyInAttractant;
         previousChemicalMeasure = currentChemicalMeasure;
         currentChemicalMeasure = environment.GetComponent<Agar>().sample(transform.position); 
-        currentlyInAttractant = (currentChemicalMeasure > 0) ? true : false;
+        currentlyInAttractant = (currentChemicalMeasure > 1) ? true : false;
         if (wasInAttractant != currentlyInAttractant)
         {
             if (currentlyInAttractant) numInAttractant++;
             else numInAttractant--;
             Debug.Log("Number of E. coli in attractant: " + numInAttractant);
         }
-        goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
+        if (System.Math.Abs(currentChemicalMeasure) > 1)
+            goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
+        else
+            goingUpGradient = false;
     }
 
     public void setRunAndTumbleIntervals()
