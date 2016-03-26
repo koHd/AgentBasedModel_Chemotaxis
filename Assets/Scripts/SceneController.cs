@@ -15,7 +15,7 @@ public class SceneController : MonoBehaviour
     {
         startTime = Time.time;
         agar = Instantiate(agarPrefab) as GameObject;
-        numEcoli = 200;
+        numEcoli = 100;
         createEcoli(numEcoli);
         numChemicals = 1;
         agar.GetComponent<Agar>().addChemicals(numChemicals);        
