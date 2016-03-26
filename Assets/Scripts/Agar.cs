@@ -23,12 +23,12 @@ public class Agar : MonoBehaviour {
         {
             chemicals[i] = Instantiate(chemicalPrefab) as GameObject;
             numChemicals++;
-            chemicals[i].transform.position = new Vector3(Random.Range(-1000.0f, 1000.0f), 0.0f, Random.Range(-1000.0f, 1000.0f));
-            float radius = Random.Range(500.0f, 1000.0f);
-            chemicals[i].transform.localScale += new Vector3(radius, 0.0f, radius);
-            chemicals[i].GetComponent<Chemical>().setConcentration(1.0f);
+            chemicals[i].transform.position = new Vector3(0, 0, 0);
+            float concentration = 100;
+            chemicals[i].GetComponent<Chemical>().setConcentration(concentration);
+            chemicals[i].transform.localScale += new Vector3(concentration, 100, concentration);
             float cointToss = Random.Range(0.0f, 1.0f);
-            if (cointToss >= 0.5f)
+            if (cointToss >= 0.0f)
             {
                 chemicals[i].GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
             }
@@ -39,23 +39,21 @@ public class Agar : MonoBehaviour {
         }
     }
 
-    public GameObject getHighestConcentratedChemicalAtLocation(Vector3 location)
+    public int sample(Vector3 location)
     {
+        int totalSample = 0;
         if (chemicals != null)
         {
-            float highestConcentratedChemicalSoFar = 0;
-            int indexOfHighestConcreatedChemicalSoFar = 0;
+            int curSample = 0;
+            int concentration = 0;
             for (int i = 0; i < chemicals.Length; i++)
             {
-                float curConcentration = chemicals[i].GetComponent<Chemical>().getConcentration(location);
-                if (curConcentration > highestConcentratedChemicalSoFar)
-                {
-                    highestConcentratedChemicalSoFar = curConcentration;
-                    indexOfHighestConcreatedChemicalSoFar = i;
-                }
+                curSample = 0;
+                concentration = chemicals[i].GetComponent<Chemical>().getConcentration(location);
+                curSample = (chemicals[i].GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant) ? concentration : -concentration;
+                totalSample += curSample;
             }
-            return chemicals[indexOfHighestConcreatedChemicalSoFar];
         }
-        return null;
+        return totalSample;
     }
 }

@@ -4,7 +4,8 @@ using System.Collections;
 public class Ecoli : MonoBehaviour
 {
     private float speed = 20;
-    private float runInterval, tumbleInterval, previousChemicalMeasure, currentChemicalMeasure;
+    private float runInterval, tumbleInterval;
+    private int previousChemicalMeasure, currentChemicalMeasure;
     private bool inAttractant, busy, goingUpGradient;
     private Collider environment;
     private GameObject lastSampledChemical;
@@ -19,6 +20,14 @@ public class Ecoli : MonoBehaviour
             updateChemicalSamples();
             if (inAttractant) numInAttractant++;
             Debug.Log("Number of E. coli in attractant: " + numInAttractant);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<Agar>())
+        {
+            Destroy(this);
         }
     }
 
@@ -65,21 +74,10 @@ public class Ecoli : MonoBehaviour
 
     public void updateChemicalSamples()
     {
-        lastSampledChemical = environment.GetComponent<Agar>().getHighestConcentratedChemicalAtLocation(transform.position);
-        if (lastSampledChemical)
-        {
-            float concentration = lastSampledChemical.GetComponent<Chemical>().getConcentration(transform.position);
-            previousChemicalMeasure = currentChemicalMeasure;
-            currentChemicalMeasure = (lastSampledChemical.GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant) ? concentration : -concentration;
-            inAttractant = (currentChemicalMeasure > 0) ? true : false;
-            goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
-        }
-        else
-        {
-            previousChemicalMeasure = 0;
-            currentChemicalMeasure = 0;
-        }
-
+        previousChemicalMeasure = currentChemicalMeasure;
+        currentChemicalMeasure = environment.GetComponent<Agar>().sample(transform.position);
+        inAttractant = (currentChemicalMeasure > 0) ? true : false;
+        goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
     }
 
     public void setRunAndTumbleIntervals()
