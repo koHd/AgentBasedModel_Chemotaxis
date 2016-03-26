@@ -3,26 +3,19 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private float speed, runInterval, tumbleInterval, previousChemicalMeasure, currentChemicalMeasure;
+    private float speed = 20;
+    private float runInterval, tumbleInterval, previousChemicalMeasure, currentChemicalMeasure;
     private bool inAttractant, busy, goingUpGradient;
-    private Collider curChemical;
+    private Collider environment;
+    private GameObject lastSampledChemical;
 
     private static int numInAttractant;
 
-    void Start () // initialise E. coli
+    void OnTriggerEnter(Collider other) // E. coli detects it's environment
     {
-        speed = 20; // E. coli can swim ~20um/s
-        goingUpGradient = false;
-        previousChemicalMeasure = 0;
-        currentChemicalMeasure = 0;
-        setRunAndTumbleIntervals();
-    }
-
-    void OnTriggerEnter(Collider other) // E. coli detects some new medium in the environment
-    {
-        if (other.GetComponent<Chemical>())
+        if (other.GetComponent<Agar>())
         {
-            curChemical = other;
+            environment = other;
             updateChemicalSamples();
             if (inAttractant) numInAttractant++;
             Debug.Log("Number of E. coli in attractant: " + numInAttractant);
@@ -38,23 +31,6 @@ public class Ecoli : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other) // E. coli has detected it has left some medium
-    {
-        if (curChemical)
-        {
-            curChemical = null;
-            goingUpGradient = false;
-            previousChemicalMeasure = 0;
-            currentChemicalMeasure = 0;
-            if (inAttractant)
-            {
-                numInAttractant--;
-                inAttractant = false;
-                Debug.Log("Number of E. coli in attractant: " + numInAttractant);
-            }
-        }
-    }
-
     public IEnumerator swim()
     {
         float startTime = Time.time;
@@ -67,7 +43,7 @@ public class Ecoli : MonoBehaviour
         }
         busy = false;
         float totalTime = Time.time - startTime;
-        if (curChemical) updateChemicalSamples();
+        if (environment) updateChemicalSamples();
         if (!goingUpGradient) StartCoroutine(tumble());
 
     }
@@ -87,14 +63,22 @@ public class Ecoli : MonoBehaviour
         float totalTime = Time.time - startTime;
     }
 
-
     public void updateChemicalSamples()
     {
-        float concentration = curChemical.GetComponent<Chemical>().getConcentration(transform.position);
-        previousChemicalMeasure = currentChemicalMeasure;
-        currentChemicalMeasure = (curChemical.GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant)  ? concentration : -concentration;
-        inAttractant = (currentChemicalMeasure > 0) ? true : false;
-        goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
+        lastSampledChemical = environment.GetComponent<Agar>().getHighestConcentratedChemicalAtLocation(transform.position);
+        if (lastSampledChemical)
+        {
+            float concentration = lastSampledChemical.GetComponent<Chemical>().getConcentration(transform.position);
+            previousChemicalMeasure = currentChemicalMeasure;
+            currentChemicalMeasure = (lastSampledChemical.GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant) ? concentration : -concentration;
+            inAttractant = (currentChemicalMeasure > 0) ? true : false;
+            goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
+        }
+        else
+        {
+            previousChemicalMeasure = 0;
+            currentChemicalMeasure = 0;
+        }
 
     }
 
@@ -111,16 +95,6 @@ public class Ecoli : MonoBehaviour
             runInterval = Random.Range(0.0f, 2.04f);
             tumbleInterval = Random.Range(0.14f, 0.33f);
         }
-    }
-
-    public bool getInAttractant()
-    {
-        return inAttractant;
-    }
-
-    public static int getNumInAttractant()
-    {
-        return numInAttractant;
     }
 
 }

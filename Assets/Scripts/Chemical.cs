@@ -34,6 +34,7 @@ public class Chemical : MonoBehaviour {
     {
         this.ecoliReaction = reaction;
         if (reaction == BacteriaReaction.Repellent) GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+        else GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
     }
 
     public BacteriaReaction getEcoliReaction()
