@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public class SceneController : MonoBehaviour
 {
-    float startTime;
-    float timeElapsed;
+    float startTime, timeElapsed;
     [SerializeField]
     private GameObject ecoliPrefab, checmicalPrefab;
     private GameObject[] ecoli, chemicals;
@@ -14,7 +13,7 @@ public class SceneController : MonoBehaviour
     void Start()
     {
         startTime = Time.time;
-        numEcoli = 20;
+        numEcoli = 100;
         numChemicals = 1;
         createEcoli(numEcoli);
         createChemicals(numChemicals);
@@ -31,7 +30,7 @@ public class SceneController : MonoBehaviour
         for (int i = 0; i < ecoli.Length; i++)
         {
             ecoli[i] = Instantiate(ecoliPrefab) as GameObject;
-            ecoli[i].transform.position = new Vector3(Random.Range(-10.0f, 10.0f), 0.5f, Random.Range(-10.0f, 10.0f));
+            ecoli[i].transform.position = new Vector3(Random.Range(-10.0f, 10.0f), 0.5f, Random.Range(-1000.0f, 1000.0f));
         }
     }
 
@@ -42,7 +41,7 @@ public class SceneController : MonoBehaviour
         {
             chemicals[i] = Instantiate(checmicalPrefab) as GameObject;
             chemicals[i].transform.position = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 10.0f));
-            float radius = Random.Range(50.0f, 100.0f);
+            float radius = Random.Range(1000.0f, 1500.0f);
             chemicals[i].transform.localScale += new Vector3(radius, 0.0f, radius);
             float cointToss = Random.Range(0.0f, 1.0f);
             if (cointToss >= 0.0f)
