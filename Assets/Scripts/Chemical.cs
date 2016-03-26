@@ -1,23 +1,33 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class Chemical : MonoBehaviour {
 
     public enum BacteriaReaction { Attractant, Neutral, Repellent }
 
     private Vector3 origin;
-    private float concentration;
+    private float concentration, radius;
     private BacteriaReaction ecoliReaction;
 
     // Use this for initialization
     void Start()
     {
-        origin = transform.position;
+
+    }
+
+    public void setOrigin(Vector3 location)
+    {
+        this.origin = location;
+    }
+
+    public void setConcentration(float concentration)
+    {
+        this.concentration = concentration;
     }
 
     public float getConcentration(Vector3 position)
     {
-        return transform.localScale.magnitude / Vector3.Distance(origin, position);
+        return this.concentration * (transform.localScale.magnitude / Vector3.Distance(origin, position));
     }
 
     public void setEcoliReaction(BacteriaReaction reaction)
@@ -28,7 +38,7 @@ public class Chemical : MonoBehaviour {
 
     public BacteriaReaction getEcoliReaction()
     {
-        return ecoliReaction;
+        return this.ecoliReaction;
     }
 
 }
