@@ -18,6 +18,7 @@ public class Chemical : MonoBehaviour {
     public void setOrigin(Vector3 location)
     {
         this.origin = location;
+        transform.position = location;
     }
 
     public void setConcentration(float concentration)
@@ -25,9 +26,9 @@ public class Chemical : MonoBehaviour {
         this.concentration = concentration;
     }
 
-    public int getConcentration(Vector3 position)
+    public float getConcentration(Vector3 position)
     {
-        return (int) ((concentration / Vector3.Distance(origin, position)));
+        return (concentration / Vector3.Distance(origin, position));
     }
 
     public void setEcoliReaction(BacteriaReaction reaction)
