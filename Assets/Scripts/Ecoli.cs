@@ -8,7 +8,6 @@ public class Ecoli : MonoBehaviour
     private int previousChemicalMeasure, currentChemicalMeasure;
     private bool inAttractant, busy, goingUpGradient;
     private Collider environment;
-    private GameObject lastSampledChemical;
 
     private static int numInAttractant;
 
@@ -42,16 +41,15 @@ public class Ecoli : MonoBehaviour
 
     public IEnumerator swim()
     {
-        float startTime = Time.time;
         while (runInterval > 0)
         {
             busy = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
             runInterval -= Time.deltaTime;
+
             yield return null;
         }
         busy = false;
-        float totalTime = Time.time - startTime;
         if (environment) updateChemicalSamples();
         if (!goingUpGradient) StartCoroutine(tumble());
 
@@ -59,7 +57,6 @@ public class Ecoli : MonoBehaviour
 
     public IEnumerator tumble()
     {
-        float startTime = Time.time;
         while (tumbleInterval > 0)
         {
             busy = true;
@@ -69,7 +66,6 @@ public class Ecoli : MonoBehaviour
             yield return null;
         }
         busy = false;
-        float totalTime = Time.time - startTime;
     }
 
     public void updateChemicalSamples()
