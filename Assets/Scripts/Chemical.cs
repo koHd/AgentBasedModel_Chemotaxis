@@ -18,7 +18,7 @@ public class Chemical : MonoBehaviour {
     public void setConcentration(float concentration)
     {
         this.concentration = concentration;
-        transform.localScale += new Vector3(concentration, concentration, concentration);
+        transform.localScale += new Vector3(concentration, 100, concentration);
     }
 
     public float getConcentrationAtPosition(Vector3 position)
