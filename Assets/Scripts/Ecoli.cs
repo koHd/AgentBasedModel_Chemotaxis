@@ -3,29 +3,28 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private float speed, runInterval, tumbleInterval, previousChemicalMeasure, currentChemicalMeasure;
-    private bool inAttractant, busy, goingUpGradient;
-    private Collider curChemical;
+    private float speed = 20;
+    private float runInterval, tumbleInterval;
+    private float previousChemicalMeasure, currentChemicalMeasure;
+    private bool wasInAttractant, currentlyInAttractant, busy, goingUpGradient;
+    private Collider environment;
 
     private static int numInAttractant;
 
-    void Start () // initialise E. coli
+    void OnTriggerEnter(Collider other) // E. coli detects it's environment
     {
-        speed = 20; // E. coli can swim ~20um/s
-        goingUpGradient = false;
-        previousChemicalMeasure = 0;
-        currentChemicalMeasure = 0;
-        setRunAndTumbleIntervals();
+        if (other.GetComponent<Agar>())
+        {
+            environment = other;
+            updateChemicalSamples();
+        }
     }
 
-    void OnTriggerEnter(Collider other) // E. coli detects some new medium in the environment
+    void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<Chemical>())
+        if (other.GetComponent<Agar>())
         {
-            curChemical = other;
-            updateChemicalSamples();
-            if (inAttractant) numInAttractant++;
-            Debug.Log("Number of E. coli in attractant: " + numInAttractant);
+            Destroy(this);
         }
     }
 
@@ -38,43 +37,25 @@ public class Ecoli : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other) // E. coli has detected it has left some medium
-    {
-        if (curChemical)
-        {
-            curChemical = null;
-            goingUpGradient = false;
-            previousChemicalMeasure = 0;
-            currentChemicalMeasure = 0;
-            if (inAttractant)
-            {
-                numInAttractant--;
-                inAttractant = false;
-                Debug.Log("Number of E. coli in attractant: " + numInAttractant);
-            }
-        }
-    }
-
     public IEnumerator swim()
     {
-        float startTime = Time.time;
         while (runInterval > 0)
         {
             busy = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
+            transform.Rotate(Vector3.forward, Random.Range(2, 10) * Time.deltaTime); // Brownian motion causes E. coli to slightly wander from straight path
             runInterval -= Time.deltaTime;
+
             yield return null;
         }
         busy = false;
-        float totalTime = Time.time - startTime;
-        if (curChemical) updateChemicalSamples();
+        if (environment) updateChemicalSamples();
         if (!goingUpGradient) StartCoroutine(tumble());
 
     }
 
     public IEnumerator tumble()
     {
-        float startTime = Time.time;
         while (tumbleInterval > 0)
         {
             busy = true;
@@ -84,23 +65,29 @@ public class Ecoli : MonoBehaviour
             yield return null;
         }
         busy = false;
-        float totalTime = Time.time - startTime;
     }
-
 
     public void updateChemicalSamples()
     {
-        float concentration = curChemical.GetComponent<Chemical>().getConcentration(transform.position);
+        wasInAttractant = currentlyInAttractant;
         previousChemicalMeasure = currentChemicalMeasure;
-        currentChemicalMeasure = (curChemical.GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant)  ? concentration : -concentration;
-        inAttractant = (currentChemicalMeasure > 0) ? true : false;
-        goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
-
+        currentChemicalMeasure = environment.GetComponent<Agar>().sample(transform.position); 
+        currentlyInAttractant = (currentChemicalMeasure > 1) ? true : false;
+        if (wasInAttractant != currentlyInAttractant)
+        {
+            if (currentlyInAttractant) numInAttractant++;
+            else numInAttractant--;
+            Debug.Log("Number of E. coli in attractant: " + numInAttractant);
+        }
+        if (System.Math.Abs(currentChemicalMeasure) > 1)
+            goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
+        else
+            goingUpGradient = false;
     }
 
     public void setRunAndTumbleIntervals()
     {
-        if (inAttractant && goingUpGradient)
+        if (currentlyInAttractant && goingUpGradient)
         {
             runInterval = Random.Range(2.0f, 5.52f);
             tumbleInterval = Random.Range(0.0f, 0.05f);
@@ -111,16 +98,6 @@ public class Ecoli : MonoBehaviour
             runInterval = Random.Range(0.0f, 2.04f);
             tumbleInterval = Random.Range(0.14f, 0.33f);
         }
-    }
-
-    public bool getInAttractant()
-    {
-        return inAttractant;
-    }
-
-    public static int getNumInAttractant()
-    {
-        return numInAttractant;
     }
 
 }
