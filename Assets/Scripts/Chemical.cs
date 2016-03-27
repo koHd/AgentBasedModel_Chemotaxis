@@ -6,14 +6,8 @@ public class Chemical : MonoBehaviour {
     public enum BacteriaReaction { Attractant, Neutral, Repellent }
 
     private Vector3 origin;
-    private float concentration, radius;
+    private float concentration;
     private BacteriaReaction ecoliReaction;
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
 
     public void setOrigin(Vector3 location)
     {
