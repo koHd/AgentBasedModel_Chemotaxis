@@ -4,31 +4,20 @@ using System.Collections.Generic;
 
 public class SceneController : MonoBehaviour
 {
-    float startTime, timeElapsed;
-    [SerializeField]
-    private GameObject agarPrefab, ecoliPrefab, chemicalPrefab;
     private GameObject agar;
     private GameObject[] ecoli, chemicals;
     private int numEcoli, numChemicals;
 
+    [SerializeField]
+    private GameObject agarPrefab, ecoliPrefab, chemicalPrefab;
+
     void Start()
     {
-        startTime = Time.time;
         agar = Instantiate(agarPrefab) as GameObject;
-        numEcoli = 1000;
+        numEcoli = 10;
         addEcoliToAgar(numEcoli);
         numChemicals = 3;
-        GameObject chemical = Instantiate(chemicalPrefab) as GameObject;
-        chemical.GetComponent<Chemical>().setOrigin(new Vector3(0, 0, 0));
-        chemical.GetComponent<Chemical>().setConcentration(500);
-        chemical.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
-        agar.GetComponent<Agar>().addChemical(chemical);        
-
-    }
-
-    void Update()
-    {
-        timeElapsed = timeElapsed - startTime;
+        addChemicalToAgar(new Vector3(0, 0, 0), 500, Chemical.BacteriaReaction.Attractant);
     }
 
     public void addEcoliToAgar(int numEcoli)
@@ -39,6 +28,15 @@ public class SceneController : MonoBehaviour
             ecoli[i] = Instantiate(ecoliPrefab) as GameObject;
             ecoli[i].transform.position = new Vector3(Random.Range(-1000, 1000), Random.Range(5.0f, 50.0f), Random.Range(-1000, 1000));
         }
+    }
+
+    public void addChemicalToAgar(Vector3 location, float concentration, Chemical.BacteriaReaction ecoliReaction)
+    {
+        GameObject chemical = Instantiate(chemicalPrefab) as GameObject;
+        chemical.GetComponent<Chemical>().setOrigin(location);
+        chemical.GetComponent<Chemical>().setConcentration(concentration);
+        chemical.GetComponent<Chemical>().setEcoliReaction(ecoliReaction);
+        agar.GetComponent<Agar>().addChemical(chemical); 
     }
 
 }
