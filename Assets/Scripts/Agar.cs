@@ -31,7 +31,7 @@ public class Agar : MonoBehaviour {
             for (int i = 0; i < chemicals.Length; i++)
             {
                 curSample = 0;
-                concentration = chemicals[i].GetComponent<Chemical>().getConcentration(location);
+                concentration = chemicals[i].GetComponent<Chemical>().getConcentrationAtPosition(location);
                 curSample = (chemicals[i].GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant) ? concentration : -concentration;
                 totalSample += curSample;
             }

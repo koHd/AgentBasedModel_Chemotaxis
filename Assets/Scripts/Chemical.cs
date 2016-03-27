@@ -18,12 +18,12 @@ public class Chemical : MonoBehaviour {
     public void setConcentration(float concentration)
     {
         this.concentration = concentration;
-        transform.localScale += new Vector3(concentration, 0, concentration);
+        transform.localScale += new Vector3(concentration, concentration, concentration);
     }
 
-    public float getConcentration(Vector3 position)
+    public float getConcentrationAtPosition(Vector3 position)
     {
-        return (concentration / Vector3.Distance(origin, position));
+        return (concentration / 2) / Vector3.Distance(origin, position);
     }
 
     public void setEcoliReaction(BacteriaReaction reaction)
