@@ -14,13 +14,17 @@ public class SceneController : MonoBehaviour
     void Start()
     {
         agar = Instantiate(agarPrefab) as GameObject;
-        numEcoli = 500;
+        numEcoli = 1000;
         addEcoliToAgar(numEcoli);
-        numChemicals = 3;
+        numChemicals = 7;
         chemicalVialRack = new GameObject[numChemicals];
         chemicalVialRack[0] = prepareChemical(new Vector3(1000, 0, 0), 500, Chemical.BacteriaReaction.Attractant);
         chemicalVialRack[1] = prepareChemical(new Vector3(-1000, 0, 0), 500, Chemical.BacteriaReaction.Attractant);
-        chemicalVialRack[2] = prepareChemical(new Vector3(0, 0, 0), 500, Chemical.BacteriaReaction.Repellent);
+        chemicalVialRack[2] = prepareChemical(new Vector3(0, 0, 0), 500, Chemical.BacteriaReaction.Attractant);
+        chemicalVialRack[3] = prepareChemical(new Vector3(500, 0, 250), 500, Chemical.BacteriaReaction.Repellent);
+        chemicalVialRack[4] = prepareChemical(new Vector3(-500, 0, -250), 500, Chemical.BacteriaReaction.Repellent);
+        chemicalVialRack[5] = prepareChemical(new Vector3(500, 0, -250), 500, Chemical.BacteriaReaction.Repellent);
+        chemicalVialRack[6] = prepareChemical(new Vector3(-500, 0, 250), 500, Chemical.BacteriaReaction.Repellent);
         addChemicalsToAgar(chemicalVialRack);
     }
 
@@ -30,16 +34,18 @@ public class SceneController : MonoBehaviour
         for (int i = 0; i < ecoli.Length; i++)
         {
             ecoli[i] = Instantiate(ecoliPrefab) as GameObject;
-            ecoli[i].transform.position = new Vector3(0, 0, 0);
+            ecoli[i].transform.position = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
+            ecoli[i].transform.Rotate(Vector3.forward, Random.Range(1, 360) * Time.deltaTime);
         }
     }
 
     public GameObject prepareChemical(Vector3 location, float concentration, Chemical.BacteriaReaction ecoliReaction)
     {
         GameObject chemical = Instantiate(chemicalPrefab) as GameObject;
-        chemical.GetComponent<Chemical>().setOrigin(location);
+        chemical.GetComponent<Chemical>().setOrigin(agar, location);
         chemical.GetComponent<Chemical>().setConcentration(concentration);
         chemical.GetComponent<Chemical>().setEcoliReaction(ecoliReaction);
+        chemical.GetComponent<Chemical>().setSource(Chemical.Source.External);
         return chemical;
     }
 

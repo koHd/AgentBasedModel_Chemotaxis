@@ -5,7 +5,7 @@ public class Agar : MonoBehaviour {
 
     private float radius;
     private Vector3 origin;
-    private Stack<GameObject> chemicalsInAgar = new Stack<GameObject>();
+    private List<GameObject> chemicalsInAgar = new List<GameObject>();
     private int numChemicals = 0;
 
 	void Start ()
@@ -16,25 +16,28 @@ public class Agar : MonoBehaviour {
 
     public void addChemical(GameObject chemical)
     {
-        chemicalsInAgar.Push(chemical);
+        chemicalsInAgar.Add(chemical);
+    }
+
+    public void removeChemical(GameObject chemical)
+    {
+        if (chemicalsInAgar.Contains(chemical)) chemicalsInAgar.Remove(chemical);
     }
 
     public float sample(Vector3 location)
     {
         float totalSample = 0;
-        if (chemicalsInAgar != null)
+        if (chemicalsInAgar.Count > 0) 
         {
-            GameObject[] chemicals = new GameObject[chemicalsInAgar.Count];
-            chemicalsInAgar.CopyTo(chemicals, 0);
             float curSample = 0;
             float concentration = 0;
-            for (int i = 0; i < chemicals.Length; i++)
+            chemicalsInAgar.ForEach(delegate (GameObject chemical)
             {
                 curSample = 0;
-                concentration = chemicals[i].GetComponent<Chemical>().getConcentrationAtPosition(location);
-                curSample = (chemicals[i].GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant) ? concentration : -concentration;
+                concentration = chemical.GetComponent<Chemical>().getConcentrationAtPosition(location);
+                curSample = (chemical.GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant) ? concentration : -concentration;
                 totalSample += curSample;
-            }
+            });
         }
         return totalSample;
     }

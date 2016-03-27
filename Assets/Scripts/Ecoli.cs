@@ -55,7 +55,7 @@ public class Ecoli : MonoBehaviour
         busy = false;
         if (environment) updateChemicalSamples();
         if (!climbingGradient || Random.Range(0.0f, 1.0f) >= 0.9f) StartCoroutine(tumble());
-        else if (successiveClimbs >= 2 && currentlyInAttractant)
+        else if (successiveClimbs >= 4 && currentlyInAttractant)
         {
             releaseAttractant();
             successiveClimbs = 0;
@@ -110,9 +110,10 @@ public class Ecoli : MonoBehaviour
     private void releaseAttractant()
     {
         GameObject chemical = Instantiate(chemicalPrefab) as GameObject;
-        chemical.GetComponent<Chemical>().setOrigin(transform.position);
+        chemical.GetComponent<Chemical>().setOrigin(environment.gameObject, transform.position);
         chemical.GetComponent<Chemical>().setConcentration(currentChemicalMeasure/10);
         chemical.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
+        chemical.GetComponent<Chemical>().setSource(Chemical.Source.Ecoli);
         environment.GetComponent<Agar>().addChemical(chemical);
     }
 
