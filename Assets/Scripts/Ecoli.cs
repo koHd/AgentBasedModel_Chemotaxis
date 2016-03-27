@@ -54,7 +54,7 @@ public class Ecoli : MonoBehaviour
         }
         busy = false;
         if (environment) updateChemicalSamples();
-        if (!climbingGradient) StartCoroutine(tumble());
+        if (!climbingGradient || Random.Range(0.0f, 1.0f) >= 0.9f) StartCoroutine(tumble());
         else if (successiveClimbs >= 2 && currentlyInAttractant)
         {
             releaseAttractant();
