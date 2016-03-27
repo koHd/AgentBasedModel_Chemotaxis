@@ -43,7 +43,7 @@ public class Ecoli : MonoBehaviour
         {
             busy = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
-            transform.Rotate(Vector3.forward, 10 * Time.deltaTime); // Brownian motion causes E. coli to slightly wander from straight path
+            transform.Rotate(Vector3.forward, Random.Range(2, 10) * Time.deltaTime); // Brownian motion causes E. coli to slightly wander from straight path
             runInterval -= Time.deltaTime;
 
             yield return null;
