@@ -51,7 +51,6 @@ public class Ecoli : MonoBehaviour
         busy = false;
         if (environment) updateChemicalSamples();
         if (!goingUpGradient) StartCoroutine(tumble());
-
     }
 
     public IEnumerator tumble()

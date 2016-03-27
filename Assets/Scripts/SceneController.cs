@@ -16,9 +16,13 @@ public class SceneController : MonoBehaviour
         startTime = Time.time;
         agar = Instantiate(agarPrefab) as GameObject;
         numEcoli = 1000;
-        createEcoli(numEcoli);
+        addEcoliToAgar(numEcoli);
         numChemicals = 3;
-        agar.GetComponent<Agar>().addChemicals(numChemicals);        
+        GameObject chemical = Instantiate(chemicalPrefab) as GameObject;
+        chemical.GetComponent<Chemical>().setOrigin(new Vector3(0, 0, 0));
+        chemical.GetComponent<Chemical>().setConcentration(500);
+        chemical.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
+        agar.GetComponent<Agar>().addChemical(chemical);        
 
     }
 
@@ -27,7 +31,7 @@ public class SceneController : MonoBehaviour
         timeElapsed = timeElapsed - startTime;
     }
 
-    public void createEcoli(int numEcoli)
+    public void addEcoliToAgar(int numEcoli)
     {
         ecoli = new GameObject[numEcoli];
         for (int i = 0; i < ecoli.Length; i++)
