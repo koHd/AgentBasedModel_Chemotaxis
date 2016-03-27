@@ -54,12 +54,8 @@ public class Ecoli : MonoBehaviour
         }
         busy = false;
         if (environment) updateChemicalSamples();
+        if (Random.Range(0.0f, 1.0f) >= 0.9f) releaseAttractant();
         if (!climbingGradient || Random.Range(0.0f, 1.0f) >= 0.9f) StartCoroutine(tumble());
-        else if (successiveClimbs >= 4 && currentlyInAttractant)
-        {
-            releaseAttractant();
-            successiveClimbs = 0;
-        }
     }
 
     public IEnumerator tumble()
@@ -85,9 +81,9 @@ public class Ecoli : MonoBehaviour
         {
             if (currentlyInAttractant) numInAttractant++;
             else numInAttractant--;
-            Debug.Log("Number of E. coli in attractant: " + numInAttractant);
+            //Debug.Log("Number of E. coli in attractant: " + numInAttractant);
         }
-        climbingGradient = (currentChemicalMeasure > previousChemicalMeasure + (20 * (previousChemicalMeasure/100))) ? true : false;
+        climbingGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
         if (climbingGradient) successiveClimbs++;
         else successiveClimbs = 0;
     }
@@ -111,7 +107,7 @@ public class Ecoli : MonoBehaviour
     {
         GameObject chemical = Instantiate(chemicalPrefab) as GameObject;
         chemical.GetComponent<Chemical>().setOrigin(environment.gameObject, transform.position);
-        chemical.GetComponent<Chemical>().setConcentration(currentChemicalMeasure/10);
+        chemical.GetComponent<Chemical>().setConcentration(currentChemicalMeasure);
         chemical.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
         chemical.GetComponent<Chemical>().setSource(Chemical.Source.Ecoli);
         environment.GetComponent<Agar>().addChemical(chemical);

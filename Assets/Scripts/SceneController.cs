@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class SceneController : MonoBehaviour
 {
     private GameObject agar;
-    private GameObject[] ecoli, chemicalVialRack;
+    private GameObject[] ecoli;
+    private List<GameObject> chemicalVialRack = new List<GameObject>();
     private int numEcoli, numChemicals;
 
     [SerializeField]
@@ -16,15 +17,8 @@ public class SceneController : MonoBehaviour
         agar = Instantiate(agarPrefab) as GameObject;
         numEcoli = 1000;
         addEcoliToAgar(numEcoli);
-        numChemicals = 7;
-        chemicalVialRack = new GameObject[numChemicals];
-        chemicalVialRack[0] = prepareChemical(new Vector3(1000, 0, 0), 500, Chemical.BacteriaReaction.Attractant);
-        chemicalVialRack[1] = prepareChemical(new Vector3(-1000, 0, 0), 500, Chemical.BacteriaReaction.Attractant);
-        chemicalVialRack[2] = prepareChemical(new Vector3(0, 0, 0), 500, Chemical.BacteriaReaction.Attractant);
-        chemicalVialRack[3] = prepareChemical(new Vector3(500, 0, 250), 500, Chemical.BacteriaReaction.Repellent);
-        chemicalVialRack[4] = prepareChemical(new Vector3(-500, 0, -250), 500, Chemical.BacteriaReaction.Repellent);
-        chemicalVialRack[5] = prepareChemical(new Vector3(500, 0, -250), 500, Chemical.BacteriaReaction.Repellent);
-        chemicalVialRack[6] = prepareChemical(new Vector3(-500, 0, 250), 500, Chemical.BacteriaReaction.Repellent);
+        //chemicalVialRack.Add(prepareChemical(new Vector3(1000, 0, 0), 500, Chemical.BacteriaReaction.Attractant));
+        chemicalVialRack.Add(prepareChemical(new Vector3(-500, 0, 0), 500, Chemical.BacteriaReaction.Attractant));
         addChemicalsToAgar(chemicalVialRack);
     }
 
@@ -49,12 +43,12 @@ public class SceneController : MonoBehaviour
         return chemical;
     }
 
-    public void addChemicalsToAgar(GameObject[] chemicals)
+    public void addChemicalsToAgar(List<GameObject> chemicals)
     {
-        for(int i = 0; i < chemicals.Length; i++)
+        chemicals.ForEach(delegate (GameObject chemical)
         {
-            agar.GetComponent<Agar>().addChemical(chemicals[i]);
-        }
+            agar.GetComponent<Agar>().addChemical(chemical);
+        });
     }
 
 }

@@ -14,7 +14,7 @@ public class Chemical : MonoBehaviour {
 
     void Update()
     {
-        if (source == Source.Ecoli && Time.time - creationTime >= 10.0f)
+        if (source == Source.Ecoli && Time.time - creationTime >= 5.0f)
         {
             environment.GetComponent<Agar>().removeChemical(this.gameObject);
             Destroy(this.gameObject);
@@ -32,7 +32,7 @@ public class Chemical : MonoBehaviour {
     public void setConcentration(float concentration)
     {
         this.concentration = concentration;
-        transform.localScale += new Vector3(concentration, 100, concentration);
+        transform.localScale += new Vector3(concentration, concentration, concentration);
     }
 
     public float getConcentrationAtPosition(Vector3 position)
