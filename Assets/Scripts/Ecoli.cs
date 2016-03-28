@@ -3,13 +3,17 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
+    private int successiveClimbs = 0;
     private float speed = 20;
     private float runInterval, tumbleInterval;
     private float previousChemicalMeasure, currentChemicalMeasure;
-    private bool wasInAttractant, currentlyInAttractant, busy, goingUpGradient;
+    private bool wasInAttractant, currentlyInAttractant, busy, climbingGradient;
     private Collider environment;
 
     private static int numInAttractant;
+
+    [SerializeField]
+    private GameObject chemicalPrefab;
 
     void OnTriggerEnter(Collider other) // E. coli detects it's environment
     {
@@ -50,8 +54,8 @@ public class Ecoli : MonoBehaviour
         }
         busy = false;
         if (environment) updateChemicalSamples();
-        if (!goingUpGradient) StartCoroutine(tumble());
-
+        if (Random.Range(0.0f, 1.0f) > 0.95f) releaseAttractant();
+        if (!climbingGradient || Random.Range(0.0f, 1.0f) >= 0.98f) StartCoroutine(tumble());
     }
 
     public IEnumerator tumble()
@@ -69,25 +73,24 @@ public class Ecoli : MonoBehaviour
 
     public void updateChemicalSamples()
     {
-        wasInAttractant = currentlyInAttractant;
         previousChemicalMeasure = currentChemicalMeasure;
-        currentChemicalMeasure = environment.GetComponent<Agar>().sample(transform.position); 
-        currentlyInAttractant = (currentChemicalMeasure > 1) ? true : false;
+        currentChemicalMeasure = environment.GetComponent<Agar>().sample(transform.position);
+        wasInAttractant = currentlyInAttractant;
+        currentlyInAttractant = (currentChemicalMeasure >= 1) ? true : false;
         if (wasInAttractant != currentlyInAttractant)
         {
             if (currentlyInAttractant) numInAttractant++;
             else numInAttractant--;
-            Debug.Log("Number of E. coli in attractant: " + numInAttractant);
+            //Debug.Log("Number of E. coli in attractant: " + numInAttractant);
         }
-        if (System.Math.Abs(currentChemicalMeasure) > 1)
-            goingUpGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
-        else
-            goingUpGradient = false;
+        climbingGradient = (currentChemicalMeasure > previousChemicalMeasure + 5* (previousChemicalMeasure/100)) ? true : false;
+        if (climbingGradient) successiveClimbs++;
+        else successiveClimbs = 0;
     }
 
     public void setRunAndTumbleIntervals()
     {
-        if (currentlyInAttractant && goingUpGradient)
+        if (currentlyInAttractant && climbingGradient)
         {
             runInterval = Random.Range(2.0f, 5.52f);
             tumbleInterval = Random.Range(0.0f, 0.05f);
@@ -98,6 +101,19 @@ public class Ecoli : MonoBehaviour
             runInterval = Random.Range(0.0f, 2.04f);
             tumbleInterval = Random.Range(0.14f, 0.33f);
         }
+    }
+
+    private void releaseAttractant()
+    {
+        float concentration = currentChemicalMeasure;
+        if (currentChemicalMeasure < 0.1f) concentration = 0.1f;
+        else if (currentChemicalMeasure >= 10.0f) concentration = 10.0f; 
+        GameObject chemical = Instantiate(chemicalPrefab) as GameObject;
+        chemical.GetComponent<Chemical>().setOrigin(environment.gameObject, transform.position);
+        chemical.GetComponent<Chemical>().setConcentration(concentration);
+        chemical.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
+        chemical.GetComponent<Chemical>().setSource(Chemical.Source.Ecoli);
+        environment.GetComponent<Agar>().addChemical(chemical);
     }
 
 }

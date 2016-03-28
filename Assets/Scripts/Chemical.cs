@@ -4,31 +4,41 @@ using System.Collections.Generic;
 public class Chemical : MonoBehaviour {
 
     public enum BacteriaReaction { Attractant, Neutral, Repellent }
+    public enum Source { External, Ecoli }
 
     private Vector3 origin;
-    private float concentration, radius;
+    private float concentration, creationTime;
+    private GameObject environment;
     private BacteriaReaction ecoliReaction;
+    private Source source;
 
-    // Use this for initialization
-    void Start()
+    void Update()
     {
-
+        if (source == Source.Ecoli && Time.time - creationTime > 10.0f)
+        {
+            environment.GetComponent<Agar>().removeChemical(this.gameObject);
+            Destroy(this.gameObject);
+        }
     }
 
-    public void setOrigin(Vector3 location)
+    public void setOrigin(GameObject environment, Vector3 location)
     {
         this.origin = location;
         transform.position = location;
+        this.environment = environment;
+        creationTime = Time.time;
     }
 
     public void setConcentration(float concentration)
     {
         this.concentration = concentration;
+        transform.localScale += new Vector3(this.concentration, this.concentration, this.concentration);
+        //Debug.Log("Added new chemical of size: " + transform.localScale.ToString());
     }
 
-    public float getConcentration(Vector3 position)
+    public float getConcentrationAtPosition(Vector3 position)
     {
-        return (concentration / Vector3.Distance(origin, position));
+        return (concentration / 2) / Vector3.Distance(origin, position);
     }
 
     public void setEcoliReaction(BacteriaReaction reaction)
@@ -41,6 +51,11 @@ public class Chemical : MonoBehaviour {
     public BacteriaReaction getEcoliReaction()
     {
         return this.ecoliReaction;
+    }
+
+    public void setSource(Source source)
+    {
+        this.source = source;
     }
 
 }
