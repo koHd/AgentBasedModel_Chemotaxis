@@ -18,7 +18,7 @@ public class SceneController : MonoBehaviour
         numEcoli = 1000;
         addEcoliToAgar(numEcoli);
         //chemicalVialRack.Add(prepareChemical(new Vector3(1000, 0, 0), 500, Chemical.BacteriaReaction.Attractant));
-        chemicalVialRack.Add(prepareChemical(new Vector3(-500, 0, 0), 500, Chemical.BacteriaReaction.Attractant));
+        chemicalVialRack.Add(prepareChemical(new Vector3(600, 0, 0), 1200, Chemical.BacteriaReaction.Attractant));
         addChemicalsToAgar(chemicalVialRack);
     }
 
@@ -28,7 +28,7 @@ public class SceneController : MonoBehaviour
         for (int i = 0; i < ecoli.Length; i++)
         {
             ecoli[i] = Instantiate(ecoliPrefab) as GameObject;
-            ecoli[i].transform.position = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
+            ecoli[i].transform.position = new Vector3(Random.Range(-1600, -1000), 0, Random.Range(-400, 400));
             ecoli[i].transform.Rotate(Vector3.forward, Random.Range(1, 360) * Time.deltaTime);
         }
     }

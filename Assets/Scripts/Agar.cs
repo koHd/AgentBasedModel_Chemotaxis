@@ -39,6 +39,7 @@ public class Agar : MonoBehaviour {
                 totalSample += curSample;
             });
         }
+        //Debug.Log("Net Chemical at location: " + location.ToString() + ": " + totalSample);
         return totalSample;
     }
 }
