@@ -54,7 +54,7 @@ public class Ecoli : MonoBehaviour
         }
         busy = false;
         if (environment) updateChemicalSamples();
-        if (Random.Range(0.0f, 1.0f) > 0.95f) releaseAttractant();
+        if (Random.Range(0.0f, 1.0f) >= 0.9f) releaseAttractant();
         if (!climbingGradient || Random.Range(0.0f, 1.0f) >= 0.98f) StartCoroutine(tumble());
     }
 
@@ -83,7 +83,7 @@ public class Ecoli : MonoBehaviour
             else numInAttractant--;
             //Debug.Log("Number of E. coli in attractant: " + numInAttractant);
         }
-        climbingGradient = (currentChemicalMeasure > previousChemicalMeasure + 5* (previousChemicalMeasure/100)) ? true : false;
+        climbingGradient = ( currentChemicalMeasure > previousChemicalMeasure + 2* (previousChemicalMeasure/100)) ? true : false;
         if (climbingGradient) successiveClimbs++;
         else successiveClimbs = 0;
     }
@@ -105,9 +105,10 @@ public class Ecoli : MonoBehaviour
 
     private void releaseAttractant()
     {
-        float concentration = currentChemicalMeasure;
+        float concentration = 0;
         if (currentChemicalMeasure < 0.1f) concentration = 0.1f;
-        else if (currentChemicalMeasure >= 10.0f) concentration = 10.0f; 
+        else if (currentChemicalMeasure >= 50.0f) concentration = 50.0f;
+        else concentration = currentChemicalMeasure; 
         GameObject chemical = Instantiate(chemicalPrefab) as GameObject;
         chemical.GetComponent<Chemical>().setOrigin(environment.gameObject, transform.position);
         chemical.GetComponent<Chemical>().setConcentration(concentration);

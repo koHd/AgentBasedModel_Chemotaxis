@@ -32,7 +32,7 @@ public class Chemical : MonoBehaviour {
     public void setConcentration(float concentration)
     {
         this.concentration = concentration;
-        transform.localScale += new Vector3(this.concentration, this.concentration, this.concentration);
+        transform.localScale += new Vector3(this.concentration, 10, this.concentration);
         //Debug.Log("Added new chemical of size: " + transform.localScale.ToString());
     }
 
