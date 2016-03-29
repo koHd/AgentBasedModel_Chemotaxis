@@ -3,11 +3,12 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private int successiveClimbs = 0;
+    private int successiveClimbs = 0, chemotacticSteps = 0;
     private float speed = 20;
-    private float runInterval, tumbleInterval;
+    private float releaseAttractantFrequency = 0.1f;
+    private float runInterval, tumbleInterval, tumbleFrequency;
     private float previousChemicalMeasure, currentChemicalMeasure;
-    private bool wasInAttractant, currentlyInAttractant, busy, climbingGradient;
+    private bool wasInAttractant, currentlyInAttractant, swimming, tumbling, climbingGradient;
     private Collider environment;
 
     private static int numInAttractant;
@@ -20,61 +21,58 @@ public class Ecoli : MonoBehaviour
         if (other.GetComponent<Agar>())
         {
             environment = other;
-            updateChemicalSamples();
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<Agar>())
-        {
-            Destroy(this);
+            sampleEnvironment();
         }
     }
 
     void Update()
     {
-        if (!busy)
+        if (!swimming && !tumbling)
         {
-            setRunAndTumbleIntervals();
-            StartCoroutine(swim());
+            if (environment) sampleEnvironment();
+            if (chemotacticSteps % 2 == 0 && Random.Range(0.0f, 1.0f) <= releaseAttractantFrequency) releaseAttractant();
+            if (Random.Range(0.0f, 1.0f) <= tumbleFrequency) StartCoroutine(tumble());
+            if (!tumbling) StartCoroutine(swim());
+            chemotacticSteps++;
         }
     }
 
-    public IEnumerator swim()
+    private IEnumerator swim()
     {
         while (runInterval > 0)
         {
-            busy = true;
+            swimming = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
             transform.Rotate(Vector3.forward, Random.Range(2, 10) * Time.deltaTime); // Brownian motion causes E. coli to slightly wander from straight path
             runInterval -= Time.deltaTime;
 
             yield return null;
         }
-        busy = false;
-        if (environment) updateChemicalSamples();
-        if (Random.Range(0.0f, 1.0f) >= 0.9f) releaseAttractant();
-        if (!climbingGradient || Random.Range(0.0f, 1.0f) >= 0.98f) StartCoroutine(tumble());
+        swimming = false;
     }
 
-    public IEnumerator tumble()
+    private IEnumerator tumble()
     {
         while (tumbleInterval > 0)
         {
-            busy = true;
+            tumbling = true;
             transform.Rotate(Vector3.forward, 720 * Time.deltaTime);
             tumbleInterval -= Time.deltaTime;
 
             yield return null;
         }
-        busy = false;
+        tumbling = false;
     }
 
-    public void updateChemicalSamples()
+    private void sampleEnvironment()
     {
         previousChemicalMeasure = currentChemicalMeasure;
         currentChemicalMeasure = environment.GetComponent<Agar>().sample(transform.position);
+        adjustInternalParameters();
+    }
+
+    private void adjustInternalParameters()
+    {
         wasInAttractant = currentlyInAttractant;
         currentlyInAttractant = (currentChemicalMeasure >= 1) ? true : false;
         if (wasInAttractant != currentlyInAttractant)
@@ -83,35 +81,19 @@ public class Ecoli : MonoBehaviour
             else numInAttractant--;
             //Debug.Log("Number of E. coli in attractant: " + numInAttractant);
         }
-        climbingGradient = ( currentChemicalMeasure > previousChemicalMeasure + 2* (previousChemicalMeasure/100)) ? true : false;
+        climbingGradient = (currentChemicalMeasure > previousChemicalMeasure + 2 * (previousChemicalMeasure / 100)) ? true : false;
+        tumbleFrequency = climbingGradient ? 0.2f : 0.5f;
         if (climbingGradient) successiveClimbs++;
         else successiveClimbs = 0;
-    }
-
-    public void setRunAndTumbleIntervals()
-    {
-        if (currentlyInAttractant && climbingGradient)
-        {
-            runInterval = Random.Range(2.0f, 5.52f);
-            tumbleInterval = Random.Range(0.0f, 0.05f);
-
-        }
-        else // baseline search/avoidance behaviour
-        {
-            runInterval = Random.Range(0.0f, 2.04f);
-            tumbleInterval = Random.Range(0.14f, 0.33f);
-        }
+        runInterval = (currentlyInAttractant && climbingGradient) ? Random.Range(2.0f, 5.52f) : Random.Range(0.0f, 2.04f);
+        tumbleInterval = Random.Range(0.14f, 0.33f);
     }
 
     private void releaseAttractant()
     {
-        float concentration = 0;
-        if (currentChemicalMeasure < 0.1f) concentration = 0.1f;
-        else if (currentChemicalMeasure >= 50.0f) concentration = 50.0f;
-        else concentration = currentChemicalMeasure; 
         GameObject chemical = Instantiate(chemicalPrefab) as GameObject;
         chemical.GetComponent<Chemical>().setOrigin(environment.gameObject, transform.position);
-        chemical.GetComponent<Chemical>().setConcentration(concentration);
+        chemical.GetComponent<Chemical>().setConcentration(2.0f);
         chemical.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
         chemical.GetComponent<Chemical>().setSource(Chemical.Source.Ecoli);
         environment.GetComponent<Agar>().addChemical(chemical);
