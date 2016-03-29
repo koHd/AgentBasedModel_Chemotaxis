@@ -5,11 +5,11 @@ public class Ecoli : MonoBehaviour
 {
     private int successiveClimbs = 0, chemotacticSteps = 0;
     private float speed = 20;
-    private float releaseAttractantFrequency = 0.1f;
     private float runInterval, tumbleInterval, tumbleFrequency;
     private float previousChemicalMeasure, currentChemicalMeasure;
     private bool wasInAttractant, currentlyInAttractant, swimming, tumbling, climbingGradient;
     private Collider environment;
+    private GameObject secretedAttractant, secretedRepellent;
 
     private static int numInAttractant;
 
@@ -22,6 +22,8 @@ public class Ecoli : MonoBehaviour
         {
             environment = other;
             sampleEnvironment();
+            secreteAttractant();
+            //secreteRepellent();
         }
     }
 
@@ -30,7 +32,6 @@ public class Ecoli : MonoBehaviour
         if (!swimming && !tumbling)
         {
             if (environment) sampleEnvironment();
-            if (chemotacticSteps % 2 == 0 && Random.Range(0.0f, 1.0f) <= releaseAttractantFrequency) releaseAttractant();
             if (Random.Range(0.0f, 1.0f) <= tumbleFrequency) StartCoroutine(tumble());
             if (!tumbling) StartCoroutine(swim());
             chemotacticSteps++;
@@ -43,6 +44,8 @@ public class Ecoli : MonoBehaviour
         {
             swimming = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
+            if (secretedAttractant) secretedAttractant.GetComponent<Chemical>().moveOrigin(transform.position); // move secreted attractant with E. coli
+            if (secretedRepellent) secretedRepellent.GetComponent<Chemical>().moveOrigin(transform.position); // move secreted repellent with E. coli
             transform.Rotate(Vector3.forward, Random.Range(2, 10) * Time.deltaTime); // Brownian motion causes E. coli to slightly wander from straight path
             runInterval -= Time.deltaTime;
 
@@ -89,14 +92,27 @@ public class Ecoli : MonoBehaviour
         tumbleInterval = Random.Range(0.14f, 0.33f);
     }
 
-    private void releaseAttractant()
+    private void secreteAttractant()
     {
-        GameObject chemical = Instantiate(chemicalPrefab) as GameObject;
-        chemical.GetComponent<Chemical>().setOrigin(environment.gameObject, transform.position);
-        chemical.GetComponent<Chemical>().setConcentration(2.0f);
-        chemical.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
-        chemical.GetComponent<Chemical>().setSource(Chemical.Source.Ecoli);
-        environment.GetComponent<Agar>().addChemical(chemical);
+        secretedAttractant = Instantiate(chemicalPrefab) as GameObject;
+        secretedAttractant.GetComponent<Chemical>().setOrigin(environment.gameObject, transform.position);
+        secretedAttractant.GetComponent<Chemical>().setConcentration(5.0f);
+        secretedAttractant.GetComponent<Chemical>().setWidth(100.0f);
+        secretedAttractant.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
+        secretedAttractant.GetComponent<Chemical>().setSource(Chemical.Source.Ecoli);
+        environment.GetComponent<Agar>().addChemical(secretedAttractant);
+    }
+
+    private void secreteRepellent()
+    {
+        // models the consumption of nutrients at the E. coli's location
+        secretedRepellent = Instantiate(chemicalPrefab) as GameObject;
+        secretedRepellent.GetComponent<Chemical>().setOrigin(environment.gameObject, transform.position);
+        secretedRepellent.GetComponent<Chemical>().setConcentration(5.0f);
+        secretedRepellent.GetComponent<Chemical>().setWidth(10.0f);
+        secretedRepellent.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Repellent);
+        secretedRepellent.GetComponent<Chemical>().setSource(Chemical.Source.Ecoli);
+        environment.GetComponent<Agar>().addChemical(secretedRepellent);
     }
 
 }
