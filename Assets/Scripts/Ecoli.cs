@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private int successiveClimbs = 0, chemotacticSteps = 0;
+    private int successiveClimbs = 0, chemotacticSteps = 0, lastSecretedAttractantStep = -10;
     private float speed = 20;
     private float runInterval, tumbleInterval, tumbleFrequency;
     private float previousChemicalMeasure, currentChemicalMeasure;
@@ -22,8 +22,6 @@ public class Ecoli : MonoBehaviour
         {
             environment = other;
             sampleEnvironment();
-            secreteAttractant();
-            //secreteRepellent();
         }
     }
 
@@ -32,6 +30,11 @@ public class Ecoli : MonoBehaviour
         if (!swimming && !tumbling)
         {
             if (environment) sampleEnvironment();
+            if (climbingGradient && chemotacticSteps >= lastSecretedAttractantStep+10)
+            {
+                secreteAttractant();
+                lastSecretedAttractantStep = chemotacticSteps;
+            }
             if (Random.Range(0.0f, 1.0f) <= tumbleFrequency) StartCoroutine(tumble());
             if (!tumbling) StartCoroutine(swim());
             chemotacticSteps++;
@@ -44,8 +47,6 @@ public class Ecoli : MonoBehaviour
         {
             swimming = true;
             transform.Translate(0, speed * Time.deltaTime, 0);
-            if (secretedAttractant) secretedAttractant.GetComponent<Chemical>().moveOrigin(transform.position); // move secreted attractant with E. coli
-            if (secretedRepellent) secretedRepellent.GetComponent<Chemical>().moveOrigin(transform.position); // move secreted repellent with E. coli
             transform.Rotate(Vector3.forward, Random.Range(2, 10) * Time.deltaTime); // Brownian motion causes E. coli to slightly wander from straight path
             runInterval -= Time.deltaTime;
 
@@ -77,15 +78,15 @@ public class Ecoli : MonoBehaviour
     private void adjustInternalParameters()
     {
         wasInAttractant = currentlyInAttractant;
-        currentlyInAttractant = (currentChemicalMeasure >= 1) ? true : false;
+        currentlyInAttractant = (Vector3.Distance(transform.position, new Vector3(0, 0, 0)) <= 1000.0f) ? true : false;
         if (wasInAttractant != currentlyInAttractant)
         {
             if (currentlyInAttractant) numInAttractant++;
             else numInAttractant--;
-            //Debug.Log("Number of E. coli in attractant: " + numInAttractant);
+            Debug.Log("After " + Time.time + " seconds there " + numInAttractant + " of E. coli in attractant");
         }
-        climbingGradient = (currentChemicalMeasure > previousChemicalMeasure + 2 * (previousChemicalMeasure / 100)) ? true : false;
-        tumbleFrequency = climbingGradient ? 0.2f : 0.5f;
+        climbingGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
+        tumbleFrequency = climbingGradient ? Random.Range(0.0f, 0.1f) : Random.Range(0.5f, 1.0f);
         if (climbingGradient) successiveClimbs++;
         else successiveClimbs = 0;
         runInterval = (currentlyInAttractant && climbingGradient) ? Random.Range(2.0f, 5.52f) : Random.Range(0.0f, 2.04f);

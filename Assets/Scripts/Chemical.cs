@@ -12,6 +12,15 @@ public class Chemical : MonoBehaviour {
     private BacteriaReaction ecoliReaction;
     private Source source;
 
+    void Update()
+    {
+        if (source == Source.Ecoli && Time.time - creationTime > 3.0f)
+        {
+            environment.GetComponent<Agar>().removeChemical(this.gameObject);
+            Destroy(this.gameObject);
+        }
+    }
+
     public void setOrigin(GameObject environment, Vector3 location)
     {
         this.origin = location;
@@ -42,7 +51,7 @@ public class Chemical : MonoBehaviour {
         float concentrationAtPosition = 0;
         float distanceFromOrigin = Vector3.Distance(origin, position);
         if (position == origin) concentrationAtPosition = concentration;
-        else if (distanceFromOrigin > width) concentrationAtPosition = 0;
+        else if (distanceFromOrigin > (width/2)) concentrationAtPosition = 0;
         else concentrationAtPosition = (concentration / (width / 2)) / distanceFromOrigin;
         return concentrationAtPosition;
     }
