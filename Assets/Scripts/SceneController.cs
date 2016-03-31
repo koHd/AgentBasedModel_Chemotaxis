@@ -29,9 +29,9 @@ public class SceneController : MonoBehaviour
         Vector3 position = new Vector3(0, 0, 0);
         for (int i = 0; i < numEcoli; i++)
         {
-            if (i <= 250) position = new Vector3(-1200, 0, 0);
-            else if (i <= 500) position = new Vector3(-1800, 0, 0);
-            else if (i <= 750) position = new Vector3(-1600, 0, -400);
+            if (i <= 25 *(numEcoli/100)) position = new Vector3(-1200, 0, 0);
+            else if (i <= 50 * (numEcoli / 100)) position = new Vector3(-1800, 0, 0);
+            else if (i <= 75 * (numEcoli / 100)) position = new Vector3(-1600, 0, -400);
             else position = new Vector3(-1600, 0, 400);
             ecoli[i] = Instantiate(ecoliPrefab) as GameObject;
             ecoli[i].transform.position = position;

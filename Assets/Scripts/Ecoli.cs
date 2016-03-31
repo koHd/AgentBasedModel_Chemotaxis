@@ -83,7 +83,7 @@ public class Ecoli : MonoBehaviour
         {
             if (currentlyInAttractant) numInAttractant++;
             else numInAttractant--;
-            Debug.Log("After " + Time.time + " seconds there " + numInAttractant + " of E. coli in attractant");
+            //Debug.Log("After " + Time.time + " seconds there " + numInAttractant + " of E. coli in attractant");
         }
         climbingGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
         tumbleFrequency = climbingGradient ? Random.Range(0.0f, 0.1f) : Random.Range(0.5f, 1.0f);
