@@ -79,18 +79,23 @@ public class Ecoli : MonoBehaviour
     {
         wasInAttractant = currentlyInAttractant;
         currentlyInAttractant = (Vector3.Distance(transform.position, new Vector3(0, 0, 0)) <= 1000.0f) ? true : false;
-        if (wasInAttractant != currentlyInAttractant)
-        {
-            if (currentlyInAttractant) numInAttractant++;
-            else numInAttractant--;
-            //Debug.Log("After " + Time.time + " seconds there " + numInAttractant + " of E. coli in attractant");
-        }
+        updateInAttractantCount();
         climbingGradient = (currentChemicalMeasure > previousChemicalMeasure) ? true : false;
         tumbleFrequency = climbingGradient ? Random.Range(0.0f, 0.1f) : Random.Range(0.5f, 1.0f);
         if (climbingGradient) successiveClimbs++;
         else successiveClimbs = 0;
         runInterval = (currentlyInAttractant && climbingGradient) ? Random.Range(2.0f, 5.52f) : Random.Range(0.0f, 2.04f);
         tumbleInterval = Random.Range(0.14f, 0.33f);
+    }
+
+    private void updateInAttractantCount()
+    {
+        if (wasInAttractant != currentlyInAttractant)
+        {
+            if (currentlyInAttractant) numInAttractant++;
+            else numInAttractant--;
+            Debug.Log("After " + Time.time + " seconds there is " + numInAttractant + " of E. coli in attractant");
+        }
     }
 
     private void secreteAttractant()
