@@ -1,28 +1,12 @@
-# Chemotaxis Simulation
+# Chemotaxis And Quorum Sensing Simulation
 
-Reinforcement learning project to simulate chemotactic behaviour of organisms.
-
-## Roadmap
-
-* simple 3d environment [X]
-* dumb agent [X]
-* dumb agent with states and random movement [X]
-* autonomous agent with finite state machine and logical movement [X]
-  * expected completion date: 19/11/15
-* goal driven agent that simulates chemotaxis convincingly [current]
-  * Markov Decision Process
-    * Break behaviour into discrete actions [ ]
-    * Map world points as States [ ]
-    * Find a Reward algorithm that's based on sugar concentration in current state and the neighbour states [ ]
-    * Agent implements MDP with a given policy [ ]
-    * Have Agent new novel policies [ ]
-  * expected completion date: 14/02/16
-* machine learning agent that can autonomously derive new tactics [ ]
-  * expected completion date: 01/03/16
+Unity3D application that visually simulates the foraging behaviour of E. coli
 
 ## Demo
 
-http://ec2-52-19-166-61.eu-west-1.compute.amazonaws.com:8080/chemotaxis/
+[old version] http://ec2-52-19-166-61.eu-west-1.compute.amazonaws.com:8080/chemotaxis/
+
+[new version to be published 5/4/16
 
 ## Git remotes
 
