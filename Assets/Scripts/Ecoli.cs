@@ -11,10 +11,10 @@ public class Ecoli : MonoBehaviour
     private Collider environment;
     private GameObject secretedAttractant, secretedRepellent;
 
-    private static int numInAttractant;
-
     [SerializeField]
     private GameObject chemicalPrefab;
+
+    public static int numInAttractant;
 
     void OnTriggerEnter(Collider other) // E. coli detects it's environment
     {

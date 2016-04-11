@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 
@@ -12,15 +13,23 @@ public class SceneController : MonoBehaviour
 
     [SerializeField]
     private GameObject agarPrefab, ecoliPrefab, chemicalPrefab;
+    [SerializeField]
+    private Text inAttractantCount;
 
     void Start()
     {
         agar = Instantiate(agarPrefab) as GameObject;
-        numEcoli = 1000;
+        numEcoli = 600;
         addEcoliToAgar(numEcoli);
         //chemicalVialRack.Add(prepareChemical(new Vector3(1000, 0, 0), 500, Chemical.BacteriaReaction.Attractant));
         chemicalVialRack.Add(prepareChemical(new Vector3(0, 0, 0), 100000000, 2000, Chemical.BacteriaReaction.Attractant));
         addChemicalsToAgar(chemicalVialRack);
+        updateGUIText();
+    }
+
+    void Update()
+    {
+        updateGUIText();
     }
 
     public void addEcoliToAgar(int numEcoli)
@@ -56,6 +65,11 @@ public class SceneController : MonoBehaviour
         {
             agar.GetComponent<Agar>().addChemical(chemical);
         });
+    }
+
+    private void updateGUIText()
+    {
+        inAttractantCount.text = "In Attractant Count: " + Ecoli.numInAttractant;
     }
 
 }
