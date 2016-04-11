@@ -6,13 +6,20 @@ public class CameraController : MonoBehaviour {
     private float zoomSpeed = 5f, moveSpeed = 100f;
 	
 	void Update () {
+        // zoom control
+        if (Input.GetKey("down") && Camera.main.orthographicSize <= 2000f)
+            Camera.main.orthographicSize += zoomSpeed; // zoom out
+        if (Input.GetKey("up") && Camera.main.orthographicSize >= 20f)
+            Camera.main.orthographicSize -= zoomSpeed; // zoom in
+
+        // pan control
         if (Input.GetKey("w"))
-            Camera.main.orthographicSize += zoomSpeed;
+            transform.localPosition += Vector3.forward * Time.deltaTime * moveSpeed; // pan up
         if (Input.GetKey("s"))
-            Camera.main.orthographicSize -= zoomSpeed;
+            transform.localPosition += -Vector3.forward * Time.deltaTime * moveSpeed; // pan down
         if (Input.GetKey("a"))
-            transform.localPosition += -Vector3.right * Time.deltaTime * moveSpeed;
+            transform.localPosition += -Vector3.right * Time.deltaTime * moveSpeed; // pan left
         if (Input.GetKey("d"))
-            transform.localPosition += Vector3.right * Time.deltaTime * moveSpeed;
+            transform.localPosition += Vector3.right * Time.deltaTime * moveSpeed; // pan right
     }
 }
