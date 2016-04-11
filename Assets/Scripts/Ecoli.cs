@@ -14,7 +14,13 @@ public class Ecoli : MonoBehaviour
     [SerializeField]
     private GameObject chemicalPrefab;
 
+    public static int numEcoli;
     public static int numInAttractant;
+
+    void Start()
+    {
+        numEcoli++;
+    }
 
     void OnTriggerEnter(Collider other) // E. coli detects it's environment
     {

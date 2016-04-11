@@ -14,7 +14,7 @@ public class SceneController : MonoBehaviour
     [SerializeField]
     private GameObject agarPrefab, ecoliPrefab, chemicalPrefab;
     [SerializeField]
-    private Text inAttractantCount;
+    private Text timeSinceGenesis, ecoliAlive, inAttractantCount;
 
     void Start()
     {
@@ -69,7 +69,9 @@ public class SceneController : MonoBehaviour
 
     private void updateGUIText()
     {
-        inAttractantCount.text = "In Attractant Count: " + Ecoli.numInAttractant;
+        timeSinceGenesis.text = "Time Since Genesis: " + Time.time;
+        ecoliAlive.text = "E. coli Alive: " + Ecoli.numEcoli;
+        inAttractantCount.text = "E. coli Found Attractant: " + Ecoli.numInAttractant;
     }
 
 }
