@@ -4,7 +4,7 @@ Unity3D application that visually simulates the foraging behaviour of E. coli
 
 ## Demo
 
-http://ec2-52-19-166-61.eu-west-1.compute.amazonaws.com:8080/chemotaxis/ [deployed 5/4/16]
+https://build.cloud.unity3d.com/share/Zki5gJ5xbW/ [deployed 12/04/16]
 
 ## Git remotes
 
