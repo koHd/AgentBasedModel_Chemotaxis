@@ -100,7 +100,6 @@ public class Ecoli : MonoBehaviour
         {
             if (currentlyInAttractant) numInAttractant++;
             else numInAttractant--;
-            Debug.Log("After " + Time.time + " seconds there is " + numInAttractant + " of E. coli in attractant");
         }
     }
 
