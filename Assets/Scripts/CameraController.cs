@@ -3,11 +3,11 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 
-    private float zoomSpeed = 5f, moveSpeed = 100f;
+    private float zoomSpeed = 5f, moveSpeed = 2000f;
 	
 	void Update () {
         // zoom control
-        if (Input.GetKey("down") && Camera.main.orthographicSize <= 2000f)
+        if (Input.GetKey("down") && Camera.main.orthographicSize <= 1500)
             Camera.main.orthographicSize += zoomSpeed; // zoom out
         if (Input.GetKey("up") && Camera.main.orthographicSize >= 20f)
             Camera.main.orthographicSize -= zoomSpeed; // zoom in
