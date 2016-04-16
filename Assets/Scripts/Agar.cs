@@ -31,7 +31,7 @@ public class Agar : MonoBehaviour {
         {
             chemicalsInAgar.ForEach(delegate (GameObject chemical)
             {
-                totalSample = chemical.GetComponent<Chemical>().getConcentrationAtPosition(position);
+                totalSample += chemical.GetComponent<Chemical>().getConcentrationAtPosition(position);
             });
         }
         //Debug.Log("Net Chemical at location: " + location.ToString() + ": " + totalSample);
