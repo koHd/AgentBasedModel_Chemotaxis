@@ -53,7 +53,7 @@ public class Chemical : MonoBehaviour {
         if (position == origin) concentrationAtPosition = concentration;
         else if (distanceFromOrigin > (width/2)) concentrationAtPosition = 0;
         else concentrationAtPosition = (concentration / (width / 2)) / distanceFromOrigin;
-        return concentrationAtPosition;
+        return (ecoliReaction == BacteriaReaction.Attractant) ? concentrationAtPosition : -concentrationAtPosition;
     }
 
     public void setEcoliReaction(BacteriaReaction reaction)

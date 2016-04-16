@@ -24,19 +24,14 @@ public class Agar : MonoBehaviour {
         if (chemicalsInAgar.Contains(chemical)) chemicalsInAgar.Remove(chemical);
     }
 
-    public float sample(Vector3 location)
+    public float sample(Vector3 position)
     {
         float totalSample = 0;
         if (chemicalsInAgar.Count > 0) 
         {
-            float curSample = 0;
-            float concentration = 0;
             chemicalsInAgar.ForEach(delegate (GameObject chemical)
             {
-                curSample = 0;
-                concentration = chemical.GetComponent<Chemical>().getConcentrationAtPosition(location);
-                curSample = (chemical.GetComponent<Chemical>().getEcoliReaction() == Chemical.BacteriaReaction.Attractant) ? concentration : -concentration;
-                totalSample += curSample;
+                totalSample = chemical.GetComponent<Chemical>().getConcentrationAtPosition(position);
             });
         }
         //Debug.Log("Net Chemical at location: " + location.ToString() + ": " + totalSample);
