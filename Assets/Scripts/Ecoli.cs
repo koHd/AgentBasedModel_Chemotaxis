@@ -34,7 +34,7 @@ public class Ecoli : MonoBehaviour
     void Update()
     {
         useEnergy(0.001f);
-        if (health <= 0) Destroy(this.gameObject);
+        if (health <= 0) die();
         if (!swimming && !tumbling)
         {
             if (environment) sampleEnvironment();
@@ -121,5 +121,11 @@ public class Ecoli : MonoBehaviour
         secretedAttractant.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Attractant);
         secretedAttractant.GetComponent<Chemical>().setSource(Chemical.Source.Ecoli);
         environment.GetComponent<Agar>().addChemical(secretedAttractant);
+    }
+
+    private void die()
+    {
+        Destroy(this.gameObject);
+        numEcoli--;
     }
 }
