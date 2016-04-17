@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Ecoli : MonoBehaviour
 {
-    private int successiveClimbs = 0, chemotacticSteps = 0, lastSecretedAttractantStep = -10;
-    private float speed = 20;
+    private int successiveClimbs = 0, chemotacticSteps = 0;
+    private float speed = 20, health = 50;
     private float runInterval, tumbleInterval, tumbleFrequency;
     private float previousChemicalMeasure, currentChemicalMeasure;
     private bool wasInAttractant, currentlyInAttractant, swimming, tumbling, climbingGradient;
@@ -33,14 +33,12 @@ public class Ecoli : MonoBehaviour
 
     void Update()
     {
+        useEnergy(0.001f);
+        if (health <= 0) Destroy(this.gameObject);
         if (!swimming && !tumbling)
         {
             if (environment) sampleEnvironment();
-            if (climbingGradient && chemotacticSteps >= lastSecretedAttractantStep+10)
-            {
-                secreteAttractant();
-                lastSecretedAttractantStep = chemotacticSteps;
-            }
+            if (health >= 90) secreteAttractant();
             if (Random.Range(0.0f, 1.0f) <= tumbleFrequency) StartCoroutine(tumble());
             if (!tumbling) StartCoroutine(swim());
             chemotacticSteps++;
@@ -83,6 +81,7 @@ public class Ecoli : MonoBehaviour
 
     private void adjustInternalParameters()
     {
+        consumeEnergy();
         wasInAttractant = currentlyInAttractant;
         currentlyInAttractant = (Vector3.Distance(transform.position, new Vector3(0, 0, 0)) <= 1000.0f) ? true : false;
         updateInAttractantCount();
@@ -92,6 +91,16 @@ public class Ecoli : MonoBehaviour
         else successiveClimbs = 0;
         runInterval = (currentlyInAttractant && climbingGradient) ? Random.Range(2.0f, 5.52f) : Random.Range(0.0f, 2.04f);
         tumbleInterval = Random.Range(0.14f, 0.33f);
+    }
+
+    private void consumeEnergy()
+    {
+        if (currentChemicalMeasure > 0 && health < 100) health += currentChemicalMeasure/2;
+    }
+
+    private void useEnergy(float amount)
+    {
+        health -= amount;
     }
 
     private void updateInAttractantCount()
@@ -113,17 +122,4 @@ public class Ecoli : MonoBehaviour
         secretedAttractant.GetComponent<Chemical>().setSource(Chemical.Source.Ecoli);
         environment.GetComponent<Agar>().addChemical(secretedAttractant);
     }
-
-    private void secreteRepellent()
-    {
-        // models the consumption of nutrients at the E. coli's location
-        secretedRepellent = Instantiate(chemicalPrefab) as GameObject;
-        secretedRepellent.GetComponent<Chemical>().setOrigin(environment.gameObject, transform.position);
-        secretedRepellent.GetComponent<Chemical>().setConcentration(5.0f);
-        secretedRepellent.GetComponent<Chemical>().setWidth(10.0f);
-        secretedRepellent.GetComponent<Chemical>().setEcoliReaction(Chemical.BacteriaReaction.Repellent);
-        secretedRepellent.GetComponent<Chemical>().setSource(Chemical.Source.Ecoli);
-        environment.GetComponent<Agar>().addChemical(secretedRepellent);
-    }
-
 }
